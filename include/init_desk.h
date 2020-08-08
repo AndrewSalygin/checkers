@@ -4,5 +4,5 @@
 #include "data.h"
 
 // Инициализируем доску
-desk init_desk();
+Desk init_desk();
 #endif

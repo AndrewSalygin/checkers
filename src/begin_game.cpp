@@ -3,11 +3,14 @@
 void begin_game()
 {
 	// Подготавливаем доску для игры
-	desk desk = init_desk();
+	Desk desk = init_desk();
 
 	// Ход начинается с black, т.к print_desk() поменяет его на white
 	Figure_Color color_passage = Black;
 	// Рисуем начальную доску
-	// print_desk(desk);
+	print_desk(desk, color_passage);
+
+	// Начинаем игру
+	game(desk, color_passage);
 }
  

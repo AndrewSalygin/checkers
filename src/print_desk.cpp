@@ -30,21 +30,19 @@ void print_letter_line()
 }
 
 // Выводим данные из массива в виде фигур
-std::string int_to_figures(Coordinate &matrix, Figure &cell)
+std::string int_to_figures(Desk &desk, Coordinate &matrix, Figure &cell)
 {
-	cell = g_desk[matrix.y][matrix.x];
+	cell = desk[matrix.y][matrix.x];
 	// Раскраска фигур
 	if (cell.figure_color == Black) 
 	{
 		// Цвет фигуры                                  
-		return BLACK_FIGURES + 
-				// Выбираем фигуру для вывода
-				g_char_figures[cell.figure_type - 1];
+		return BLACK_FIGURES + "⛂";
 	} 
 
 	if (cell.figure_color == White && cell.figure_type != E)
 	{
-		return WHITE_FIGURES + g_char_figures[cell.figure_type - 1];
+		return WHITE_FIGURES + "⛂";
 	} 
 
 	// Отображение пустых клеток
@@ -73,7 +71,7 @@ void print_horizontal_line()
 }
 
 // Повторяющийся цикл при смене вида от белых и чёрных фигур
-void cycle_in_swap_desk(int &y, Coordinate &matrix, Figure &cell)
+void cycle_in_swap_desk(Desk &desk, int &y, Coordinate &matrix, Figure &cell)
 {
 	// Рисуем цифровые обозначения клеток
 	print_number_column(y);
@@ -93,7 +91,7 @@ void cycle_in_swap_desk(int &y, Coordinate &matrix, Figure &cell)
 			std::cout << WHITE_CELL;
 		} 
 		matrix.y = MAX_LINES - y - 1;
-		std::cout << " " << int_to_figures(matrix, cell) << " \e[0m";
+		std::cout << " " << int_to_figures(desk, matrix, cell) << " \e[0m";
 	}
 	print_number_column(y);
 
@@ -105,20 +103,20 @@ void cycle_in_swap_desk(int &y, Coordinate &matrix, Figure &cell)
 }
 
 // Переворачивает доску для другого игрока
-void swap_desk()
+void swap_desk(Desk &desk, Figure_Color &color_passage)
 {
 	Coordinate matrix;
 
 	Figure cell;
 
 	// Рисуем доску для белых
-	if (g_color_passage == true)
+	if (color_passage == White)
 	{
 		for (int y = 7; y >= 0; --y)
 		{
-			cycle_in_swap_desk(y, matrix, cell);
+			cycle_in_swap_desk(desk, y, matrix, cell);
 		}
-		g_color_passage = false;
+		color_passage = Black;
 	}
 
 	// Для чёрных
@@ -126,14 +124,14 @@ void swap_desk()
 	{
 		for (int y = 0; y < 8; ++y)
 		{
-			cycle_in_swap_desk(y, matrix, cell);
+			cycle_in_swap_desk(desk, y, matrix, cell);
 		}
-		g_color_passage = true;
+		color_passage = White;
 	}
 }
 
 // Рисуем доску
-void print_desk(desk desk)
+void print_desk(Desk &desk, Figure_Color &color_passage)
 {
 	// Очищаем терминал, прежде чем нарисовать доску
 	system("clear");
@@ -150,7 +148,7 @@ void print_desk(desk desk)
 	print_horizontal_line();
 
 	// Меняем отрисовку доски на противоположную
-	swap_desk();
+	swap_desk(desk, color_passage);
 	
 	// Рисуем буквенные обозначения
 	print_letter_line();

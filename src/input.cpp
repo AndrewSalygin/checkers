@@ -1,16 +1,16 @@
 #include "../include/input.h"
 
-// void check_input(std::string &step)
-// {
-// 	do
-// 	{
-// 		std::cin >> step;
-// 	} while (!std::regex_match(step, std::regex("[a-h][1-8][a-h][1-8]")) ||
-// 			// Идентичность клетки
-// 			(step[0] == step[2] && step[1] == step[3])); 
-// }
+void check_input(std::string &step)
+{
+	do
+	{
+		std::cin >> step;
+	} while (!std::regex_match(step, std::regex("[a-h][1-8][a-h][1-8]")) ||
+			// Идентичность клетки
+			(step[0] == step[2] && step[1] == step[3])); 
+}
 
-void game(bool color_passage)
+void game(Desk &desk, Figure_Color &color_passage)
 {
 	std::string step;
 
@@ -25,16 +25,16 @@ void game(bool color_passage)
 			std::cout << "\nХод второго игрока: ";
 		}
 
-		// check_input(step);
+		check_input(step);
 
-		// Правильность хода
-		while (move_figures(step) != true)
-		{
-			std::cout << "Неправильный ход!\n";
-			check_input(step);
-		}
+		// // Правильность хода
+		// while (move_figures(step) != true)
+		// {
+		// 	std::cout << "Неправильный ход!\n";
+		// 	check_input(step);
+		// }
 
 		// Отрисовываем доску заново
-		print_desk();
+		print_desk(desk, color_passage);
 	} while (true);
 }
