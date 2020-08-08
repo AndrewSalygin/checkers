@@ -28,7 +28,6 @@ struct Figure
 {
 	Figure_Type figure_type;
 	Figure_Color figure_color;
-	Coordinate coordinate;
 };
 
 typedef std::array<std::array<Figure, 8>, 8> Desk;

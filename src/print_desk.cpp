@@ -30,9 +30,9 @@ void print_letter_line()
 }
 
 // Выводим данные из массива в виде фигур
-std::string int_to_figures(Desk &desk, Coordinate &matrix, Figure &cell)
+std::string int_to_figures(Desk *desk, Coordinate &matrix, Figure &cell)
 {
-	cell = desk[matrix.y][matrix.x];
+	cell = (*desk)[matrix.y][matrix.x];
 	// Раскраска фигур
 	if (cell.figure_color == Black) 
 	{
@@ -71,7 +71,7 @@ void print_horizontal_line()
 }
 
 // Повторяющийся цикл при смене вида от белых и чёрных фигур
-void cycle_in_swap_desk(Desk &desk, int &y, Coordinate &matrix, Figure &cell)
+void cycle_in_swap_desk(Desk *desk, int &y, Coordinate &matrix, Figure &cell)
 {
 	// Рисуем цифровые обозначения клеток
 	print_number_column(y);
@@ -103,7 +103,7 @@ void cycle_in_swap_desk(Desk &desk, int &y, Coordinate &matrix, Figure &cell)
 }
 
 // Переворачивает доску для другого игрока
-void swap_desk(Desk &desk, Figure_Color &color_passage)
+void swap_desk(Desk *desk, Figure_Color &color_passage)
 {
 	Coordinate matrix;
 
@@ -131,7 +131,7 @@ void swap_desk(Desk &desk, Figure_Color &color_passage)
 }
 
 // Рисуем доску
-void print_desk(Desk &desk, Figure_Color &color_passage)
+void print_desk(Desk *desk, Figure_Color &color_passage)
 {
 	// Очищаем терминал, прежде чем нарисовать доску
 	system("clear");

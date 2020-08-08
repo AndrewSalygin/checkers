@@ -4,7 +4,7 @@
 #include "print_desk.h"
 #include "move_figures.h"
 
-void check_input(std::string &step);
-void game(Desk &desk, Figure_Color &color_passage);
+// void check_input(std::string &step);
+void game(Desk *desk, Figure_Color &color_passage);
 
 #endif

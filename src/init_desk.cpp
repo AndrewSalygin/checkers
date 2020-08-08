@@ -42,8 +42,6 @@ Desk init_desk()
 			{
 				desk[y][x].figure_type = Checker;
 				desk[y][x].figure_color = (Figure_Color) color;
-				desk[y][x].coordinate.y = y;
-				desk[y][x].coordinate.x = x;
 			}
 		}
 	}

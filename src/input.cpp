@@ -10,7 +10,7 @@ void check_input(std::string &step)
 			(step[0] == step[2] && step[1] == step[3])); 
 }
 
-void game(Desk &desk, Figure_Color &color_passage)
+void game(Desk *desk, Figure_Color &color_passage)
 {
 	std::string step;
 
@@ -27,12 +27,12 @@ void game(Desk &desk, Figure_Color &color_passage)
 
 		check_input(step);
 
-		// // Правильность хода
-		// while (move_figures(step) != true)
-		// {
-		// 	std::cout << "Неправильный ход!\n";
-		// 	check_input(step);
-		// }
+		// Правильность хода
+		while (move_figures(desk, step, color_passage) != true)
+		{
+			std::cout << "Неправильный ход!\n";
+			check_input(step);
+		}
 
 		// Отрисовываем доску заново
 		print_desk(desk, color_passage);

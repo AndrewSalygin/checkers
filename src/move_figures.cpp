@@ -1,7 +1,7 @@
-#include "../include/actions_on_figures.h"
+#include "../include/move_figures.h"
 
 // Движение фигур
-bool move_figures(std::string &step)
+bool move_figures(Desk *desk, std::string &step, Figure_Color color_passage)
 {
 	Coordinate matrix_c;
 	Coordinate matrix_n;
@@ -12,10 +12,10 @@ bool move_figures(std::string &step)
 	matrix_n.y = (int)step[3] - 49;
 	matrix_n.x = (int)step[2] - 97;
 
-	if (rules(matrix_c, matrix_n))
+	if (rules(desk, matrix_c, matrix_n, color_passage))
 	{
-		swap_figures(matrix_c, matrix_n);
-		clear_element(g_desk[matrix_c.y][matrix_c.x]);
+		swap_figures(desk, matrix_c, matrix_n);
+		clear_element((*desk)[matrix_c.y][matrix_c.x]);
 		return true;
 	}
 	return false;
