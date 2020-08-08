@@ -1,5 +1,5 @@
-#ifndef INIT_MAIN_ARRAY_H
-#define INIT_MAIN_ARRAY_H
+#ifndef INIT_DESK_H
+#define INIT_DESK_H
 #include <iostream>
 #include "data.h"
 

@@ -3,5 +3,5 @@
 #include "data.h"
 
 void clear_element(Figure &elem);
-void swap_figures(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n);
+void swap_checkers(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n);
 #endif

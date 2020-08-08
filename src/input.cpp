@@ -1,5 +1,6 @@
 #include "../include/input.h"
 
+// Проверка ввода с помощью регулярных выражений
 void check_input(std::string &step)
 {
 	do
@@ -16,7 +17,7 @@ void game(Desk *desk, Figure_Color &color_passage)
 
 	do
 	{
-		if (color_passage == true)
+		if (color_passage == White)
 		{
 			std::cout << "\nХод первого игрока: ";
 		}
@@ -28,7 +29,7 @@ void game(Desk *desk, Figure_Color &color_passage)
 		check_input(step);
 
 		// Правильность хода
-		while (move_figures(desk, step, color_passage) != true)
+		while (move_checkers(desk, step, color_passage) != true)
 		{
 			std::cout << "Неправильный ход!\n";
 			check_input(step);

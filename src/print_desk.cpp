@@ -3,7 +3,8 @@
 void print_number_column(int &y)
 {
 	// Рисуем клетки для обозначений игрового поля (Цифры)
-	std::cout << VERTICAL_LINE << NUMBER_COLOR << " " << MAX_LINES - y << UN_NUMBER_COLOR << " ";
+	std::cout << VERTICAL_LINE << NUMBER_COLOR << " " << MAX_LINES - y <<
+		UN_NUMBER_COLOR << " ";
 }
 
 void print_letter_line()
@@ -24,25 +25,27 @@ void print_letter_line()
 		}
 
 		// Выводим буквенные обозначения
-		std::cout << " " << LETTER_COLOR << letter++ << UN_LETTER_COLOR << " "  << "";
+		std::cout << " " << LETTER_COLOR << letter++ << UN_LETTER_COLOR <<
+			" " << "";
 	}
 	std::cout << VERTICAL_LINE << '\n';
 }
 
 // Выводим данные из массива в виде фигур
-std::string int_to_figures(Desk *desk, Coordinate &matrix, Figure &cell)
+std::string int_to_checkers(Desk *desk, Coordinate &matrix, Figure &cell)
 {
 	cell = (*desk)[matrix.y][matrix.x];
-	// Раскраска фигур
+	
+	// Раскраска пешек
 	if (cell.figure_color == Black) 
 	{
-		// Цвет фигуры                                  
-		return BLACK_FIGURES + "⛂";
+		// Цвет пешки                                  
+		return BLACK_CHECKERS + "⛂";
 	} 
 
-	if (cell.figure_color == White && cell.figure_type != E)
+	if (cell.figure_color == White && cell.figure_type != Empty)
 	{
-		return WHITE_FIGURES + "⛂";
+		return WHITE_CHECKERS + "⛂";
 	} 
 
 	// Отображение пустых клеток
@@ -82,7 +85,8 @@ void cycle_in_swap_desk(Desk *desk, int &y, Coordinate &matrix, Figure &cell)
 		std::cout << VERTICAL_LINE;
 
 		// Раскрашиваем клетки в чёрный и белый
-		if ((y % 2 != 0 && matrix.x % 2 == 0) || ((y % 2 == 0 && matrix.x % 2 != 0)))
+		if ((y % 2 != 0 && matrix.x % 2 == 0) ||
+				((y % 2 == 0 && matrix.x % 2 != 0)))
 		{
 			std::cout << BLACK_CELL;
 		} 
@@ -91,7 +95,7 @@ void cycle_in_swap_desk(Desk *desk, int &y, Coordinate &matrix, Figure &cell)
 			std::cout << WHITE_CELL;
 		} 
 		matrix.y = MAX_LINES - y - 1;
-		std::cout << " " << int_to_figures(desk, matrix, cell) << " \e[0m";
+		std::cout << " " << int_to_checkers(desk, matrix, cell) << " \e[0m";
 	}
 	print_number_column(y);
 

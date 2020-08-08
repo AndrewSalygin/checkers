@@ -9,7 +9,7 @@ void print_number_column(int &y);
 
 void print_letter_line();
 
-std::string int_to_figures(Desk *desk, Coordinate &matrix, Figure &cell);
+std::string int_to_checkers(Desk *desk, Coordinate &matrix, Figure &cell);
 
 void print_line(const std::string &line);
 

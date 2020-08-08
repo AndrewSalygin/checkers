@@ -5,7 +5,7 @@
 // Тип пешек
 enum Figure_Type
 {
-	E,
+	Empty,
 	Checker,
 	King
 };
