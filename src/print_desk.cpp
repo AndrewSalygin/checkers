@@ -37,16 +37,31 @@ std::string int_to_checkers(Desk *desk, Coordinate &matrix, Figure &cell)
 	cell = (*desk)[matrix.y][matrix.x];
 	
 	// Раскраска пешек
-	if (cell.figure_color == Black) 
+	if (cell.figure_type = Checker)
 	{
-		// Цвет пешки                                  
-		return BLACK_CHECKERS + "⛂";
-	} 
-
-	if (cell.figure_color == White && cell.figure_type != Empty)
+		if (cell.figure_color == Black) 
+		{
+			// Цвет шашки                                 
+			return BLACK_CHECKERS + "⛂";
+		} 
+		if (cell.figure_color == White)
+		{
+			return WHITE_CHECKERS + "⛂";
+		} 
+	}
+	// Раскраска дамок
+	if (cell.figure_type == King)
 	{
-		return WHITE_CHECKERS + "⛂";
-	} 
+		if (cell.figure_color == Black) 
+		{
+			// Цвет шашки                                 
+			return BLACK_CHECKERS + "⛃";
+		} 
+		if (cell.figure_color == White)
+		{
+			return WHITE_CHECKERS + "⛃";
+		} 
+	}
 
 	// Отображение пустых клеток
 	return " ";
