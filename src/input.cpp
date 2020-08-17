@@ -19,11 +19,11 @@ void game(Desk *desk, Figure_Color &color_passage)
 	{
 		if (color_passage == White)
 		{
-			std::cout << "\nХод первого игрока: ";
+			std::cout << "\nХод первого игрока\nПример(e3f4): ";
 		}
 		else
 		{
-			std::cout << "\nХод второго игрока: ";
+			std::cout << "\nХод второго игрока\nПример(d6e5): ";
 		}
 
 		check_input(step);

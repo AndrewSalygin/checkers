@@ -1,5 +1,14 @@
 #include "../include/rules.h"
 #include <iostream>
+void func_in_hit_n_step(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n)
+{
+	// Меняем элементы в массиве друг с другом 
+	swap_checkers(desk, matrix_c, matrix_n);
+
+	// Удаляем элемент, который мы поменяли
+	clear_element((*desk)[matrix_c.y][matrix_c.x]);
+}
+
 bool hit_checker(Desk *desk, Coordinate matrix_c, Coordinate matrix_n,
 		Coordinate &enemy_checker)
 {
@@ -65,6 +74,7 @@ bool hit_checker(Desk *desk, Coordinate matrix_c, Coordinate matrix_n,
 bool check_all_hit_checker(Desk *desk, Figure_Color &color_passage,
 					 Coordinate &enemy_checker)
 {
+	int count = 0;
 	Coordinate coordinate_c;
 	Coordinate coordinate_n;
 	for (int y = 0; y < 8; ++y)
@@ -128,11 +138,12 @@ bool check_all_hit_checker(Desk *desk, Figure_Color &color_passage,
 }
 
 bool step_checker(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
-		int &next_line)
+		int &next_line, Figure_Color &color_passage)
 {
 	if (matrix_n.y == next_line && 
 		(matrix_n.x == matrix_c.x + 1 || matrix_n.x == matrix_c.x - 1) &&
-		(*desk)[matrix_n.y][matrix_n.x].figure_type == Empty)
+		(*desk)[matrix_n.y][matrix_n.x].figure_type == Empty &&
+		(*desk)[matrix_c.y][matrix_c.x].figure_color == color_passage)
 	{
 		return true;
 	}
@@ -140,7 +151,7 @@ bool step_checker(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 }
 
 bool rules(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
-			Figure_Color color_passage)
+			Figure_Color &color_passage)
 {
 	// Если выбранная фигура шашка
 	if ((*desk)[matrix_c.y][matrix_c.x].figure_type == Checker)
@@ -159,22 +170,37 @@ bool rules(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 			next_line = matrix_c.y - 1;
 		}
 		// Шаг:
-		if (step_checker(desk, matrix_c, matrix_n, next_line))
+		if (step_checker(desk, matrix_c, matrix_n, next_line, color_passage))
 		{
 			if (check_all_hit_checker(desk, color_passage, enemy_checker))
 			{
 				return false;
 			}
+			func_in_hit_n_step(desk, matrix_c, matrix_n);
 			return true;
 		}
 
 		// Удар:
-		if (hit_checker(desk, matrix_c, matrix_n, enemy_checker))
+		if (hit_checker(desk, matrix_c, matrix_n, enemy_checker) &&
+				color_passage == (*desk)[matrix_c.y][matrix_c.x].figure_color)
 		{
+			func_in_hit_n_step(desk, matrix_c, matrix_n);
 			clear_element((*desk)[enemy_checker.y][enemy_checker.x]);
+			while (check_all_hit_checker(desk, color_passage, enemy_checker) ==
+					true)
+			{
+				std::cout << "Введите следующую позицию пешки\nПример(d6f4): ";
+				std::string step;
+				check_input(step);
+				// Правильность хода
+				while (move_checkers(desk, step, color_passage) != true)
+				{
+					std::cout << "Неправильный ход!\n";
+					check_input(step);
+				}
+			}
 			return true;
 		}
-		// Множественный удар
 
 	}
 	// Если выбранная фигура дамка

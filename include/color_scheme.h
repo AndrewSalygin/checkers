@@ -8,4 +8,4 @@ const std::string WHITE_CHECKERS  = "\e[1m\e[97m";
 const std::string BLACK_CHECKERS  = "\e[30m";
 const std::string WHITE_CELL      = "\e[47m";
 const std::string BLACK_CELL      = "\e[100m";
-#endif
+#endif	
