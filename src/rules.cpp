@@ -9,6 +9,18 @@ void func_in_hit_n_step(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n)
 	clear_element((*desk)[matrix_c.y][matrix_c.x]);
 }
 
+bool if_in_hit_checker(Desk *desk, Coordinate matrix_c, Coordinate matrix_n,
+		Coordinate &enemy_checker)
+{
+	if ((*desk)[enemy_checker.y][enemy_checker.x].figure_type != Empty &&
+		(*desk)[enemy_checker.y][enemy_checker.x].figure_color != 
+		(*desk)[matrix_c.y][matrix_c.x].figure_color && 
+		(*desk)[matrix_n.y][matrix_n.x].figure_type == Empty)
+	{
+		return true;
+	}
+	return false;
+}
 bool hit_checker(Desk *desk, Coordinate matrix_c, Coordinate matrix_n,
 		Coordinate &enemy_checker)
 {
@@ -30,43 +42,23 @@ bool hit_checker(Desk *desk, Coordinate matrix_c, Coordinate matrix_n,
 	}
 	if (matrix_n.y == matrix_c.y + 2 && matrix_n.x == matrix_c.x + 2)
 	{
-		if ((*desk)[enemy_checker.y][enemy_checker.x].figure_type != Empty &&
-			(*desk)[enemy_checker.y][enemy_checker.x].figure_color != 
-			(*desk)[matrix_c.y][matrix_c.x].figure_color && 
-			(*desk)[matrix_n.y][matrix_n.x].figure_type == Empty)
-		{
+		if (if_in_hit_checker(desk, matrix_c, matrix_n, enemy_checker))
 			return true;
-		}
 	}
 	if (matrix_n.y == matrix_c.y + 2 && matrix_n.x == matrix_c.x - 2)
 	{
-		if ((*desk)[enemy_checker.y][enemy_checker.x].figure_type != Empty &&
-			(*desk)[enemy_checker.y][enemy_checker.x].figure_color != 
-			(*desk)[matrix_c.y][matrix_c.x].figure_color && 
-			(*desk)[matrix_n.y][matrix_n.x].figure_type == Empty)
-		{
+		if (if_in_hit_checker(desk, matrix_c, matrix_n, enemy_checker))
 			return true;
-		}
 	}
 	if (matrix_n.y == matrix_c.y - 2 && matrix_n.x == matrix_c.x + 2)
 	{
-		if ((*desk)[enemy_checker.y][enemy_checker.x].figure_type != Empty &&
-			(*desk)[enemy_checker.y][enemy_checker.x].figure_color != 
-			(*desk)[matrix_c.y][matrix_c.x].figure_color && 
-			(*desk)[matrix_n.y][matrix_n.x].figure_type == Empty)
-		{
+		if (if_in_hit_checker(desk, matrix_c, matrix_n, enemy_checker))
 			return true;
-		}
 	}
 	if (matrix_n.y == matrix_c.y - 2 && matrix_n.x == matrix_c.x - 2)
 	{
-		if ((*desk)[enemy_checker.y][enemy_checker.x].figure_type != Empty &&
-			(*desk)[enemy_checker.y][enemy_checker.x].figure_color != 
-			(*desk)[matrix_c.y][matrix_c.x].figure_color && 
-			(*desk)[matrix_n.y][matrix_n.x].figure_type == Empty)
-		{
+		if (if_in_hit_checker(desk, matrix_c, matrix_n, enemy_checker))
 			return true;
-		}
 	}
 	return false;
 }
@@ -74,7 +66,6 @@ bool hit_checker(Desk *desk, Coordinate matrix_c, Coordinate matrix_n,
 bool check_all_hit_checker(Desk *desk, Figure_Color &color_passage,
 					 Coordinate &enemy_checker)
 {
-	int count = 0;
 	Coordinate coordinate_c;
 	Coordinate coordinate_n;
 	for (int y = 0; y < 8; ++y)
