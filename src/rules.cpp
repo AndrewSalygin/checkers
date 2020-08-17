@@ -1,5 +1,18 @@
 #include "../include/rules.h"
 #include <iostream>
+
+void checker_to_king(Desk *desk, Coordinate &matrix_c)
+{
+	if (matrix_c.y == 7 && (*desk)[matrix_c.y][matrix_c.x].figure_color == White)
+	{
+		(*desk)[matrix_c.y][matrix_c.x].figure_type = King;
+	}
+	if (matrix_c.y == 0 && (*desk)[matrix_c.y][matrix_c.x].figure_color == Black)
+	{
+		(*desk)[matrix_c.y][matrix_c.x].figure_type = King;
+	}
+}
+
 void func_in_hit_n_step(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n)
 {
 	// Меняем элементы в массиве друг с другом 
@@ -168,6 +181,7 @@ bool rules(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 				return false;
 			}
 			func_in_hit_n_step(desk, matrix_c, matrix_n);
+			checker_to_king(desk, matrix_n);
 			return true;
 		}
 
@@ -177,6 +191,7 @@ bool rules(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 		{
 			func_in_hit_n_step(desk, matrix_c, matrix_n);
 			clear_element((*desk)[enemy_checker.y][enemy_checker.x]);
+			checker_to_king(desk, matrix_n);
 			while (check_all_hit_checker(desk, color_passage, enemy_checker) ==
 					true)
 			{

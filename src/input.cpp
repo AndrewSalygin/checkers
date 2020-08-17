@@ -14,6 +14,73 @@ void restart_game(Desk *desk, Figure_Color &color_passage)
 	game(desk, color_passage);
 }
 
+bool deadlock(Desk *desk)
+{
+	int x;
+	Figure_Color local_color;
+	int count = 0;
+	for (int y = 1; y < 7; ++y)
+	{
+		if (y < 4)
+		{	
+			local_color = White;
+		}
+		else
+		{
+			local_color = Black;
+		}
+		if (y % 2 == 0)
+		{
+			x = 0;
+		}
+		else
+		{
+			x = 1;
+		}
+		for (; x < 8; x += 2)
+		{
+			if (y == 3 && x == 5)
+			{
+				if ((*desk)[y][x].figure_color == Black)
+				{
+					++count;
+				}
+			}
+			if (y == 4 && x == 2)
+			{
+				if ((*desk)[y][x].figure_color == White)
+				{
+					++count;
+				}
+			}
+			if ((*desk)[y][x].figure_color == local_color)
+			{
+				++count;
+			}
+		}
+	}
+	if (count == 24)
+	{
+		std::cout << "\nЧёрные выиграли!\nХотите сыграть ещё? (да/нет): ";
+		std::string answer;
+		Figure_Color color_passage;
+		do
+		{
+			std::cin >> answer;
+		} while (answer != "да" && answer != "нет");
+		if (answer == "да")
+		{
+			restart_game(desk, color_passage);
+		}
+		if (answer == "нет")
+		{
+			exit(0);
+		}
+		return true;
+	}
+	return false;
+}
+
 // Проверка количества шашек на доске
 bool quantity_checkers(Desk *desk, Figure_Color &color_passage)
 {
@@ -114,5 +181,5 @@ void game(Desk *desk, Figure_Color &color_passage)
 
 		// Отрисовываем доску заново
 		print_desk(desk, color_passage);
-	} while (quantity_checkers(desk, color_passage));
+	} while (quantity_checkers(desk, color_passage) && !deadlock(desk));
 }

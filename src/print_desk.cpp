@@ -37,7 +37,7 @@ std::string int_to_checkers(Desk *desk, Coordinate &matrix, Figure &cell)
 	cell = (*desk)[matrix.y][matrix.x];
 	
 	// Раскраска пешек
-	if (cell.figure_type = Checker)
+	if (cell.figure_type == Checker)
 	{
 		if (cell.figure_color == Black) 
 		{
