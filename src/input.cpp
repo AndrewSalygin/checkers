@@ -175,7 +175,7 @@ void game(Desk *desk, Figure_Color &color_passage)
 		// Правильность хода
 		while (move_checkers(desk, step, color_passage) != true)
 		{
-			std::cout << "Неправильный ход!\n";
+			std::cout << "\nХод невозможен!\nВведите другой: ";
 			check_input(step);
 		}
 

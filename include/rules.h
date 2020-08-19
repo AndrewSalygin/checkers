@@ -1,5 +1,7 @@
 #ifndef RULES_H
 #define RULES_H
+#include <iostream>
+#include <math.h>
 #include "data.h"
 #include "actions_on_array.h"
 #include "input.h"
