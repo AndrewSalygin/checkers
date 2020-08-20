@@ -149,11 +149,20 @@ void swap_desk(Desk *desk, Figure_Color &color_passage)
 	}
 }
 
+void print_rules()
+{
+	std::cout << "Чтобы выйти из игры напишите: выйти\n" <<
+	"Чтобы предложить ничью напишите: ничья\nЧтобы сдаться: сдаюсь\n";
+
+}
+
 // Рисуем доску
 void print_desk(Desk *desk, Figure_Color &color_passage)
 {
 	// Очищаем терминал, прежде чем нарисовать доску
 	system("clear");
+
+	print_rules();
 
 	// Рисуем вехнюю часть доски
 	std::cout << LEFT_TOP_CORNER;

@@ -17,5 +17,5 @@ bool check_all_hit_checker(Desk *desk, Figure_Color &color_passage,
 bool step_checker(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 		int &next_line, Figure_Color &color_passage);
 bool rules(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n, 
-	Figure_Color &color_passage);
+	Figure_Color &color_passage, bool &player_draw);
 #endif

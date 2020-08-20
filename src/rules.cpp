@@ -325,7 +325,7 @@ int count = 0;
 
 // Король
 bool king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n, 
-	Coordinate &enemy_checker, Figure_Color &color_passage)
+	Coordinate &enemy_checker, Figure_Color &color_passage, bool &player_draw)
 {
 	// Ходим только по диагоналям
 	if (abs(matrix_n.y - matrix_c.y) == abs(matrix_n.x - matrix_c.x))
@@ -350,12 +350,12 @@ bool king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 			{
 				std::cout << "Введите следующую позицию дамки\nПример(e1b4): ";
 				std::string step;
-				check_input(step);
+				check_input(step, player_draw, desk, color_passage);
 				// Правильность хода
-				while (move_checkers(desk, step, color_passage) != true)
+				while (move_checkers(desk, step, color_passage, player_draw) != true)
 				{
 					std::cout << "Неправильный ход!\n";
-					check_input(step);
+					check_input(step, player_draw, desk, color_passage);
 				}
 			}
 			return true;
@@ -513,7 +513,7 @@ bool step_checker(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 
 // Правила игры
 bool rules(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
-			Figure_Color &color_passage)
+			Figure_Color &color_passage, bool &player_draw)
 {
 	Coordinate enemy_checker;
 	// Если выбранная фигура шашка
@@ -568,12 +568,12 @@ bool rules(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 			{
 				std::cout << "Введите следующую позицию дамки\nПример(d8g5): ";
 				std::string step;
-				check_input(step);
+				check_input(step, player_draw, desk, color_passage);
 				// Правильность хода
-				while (move_checkers(desk, step, color_passage) != true)
+				while (move_checkers(desk, step, color_passage, player_draw) != true)
 				{
 					std::cout << "Неправильный ход!\n";
-					check_input(step);
+					check_input(step, player_draw, desk, color_passage);
 				}
 			}
 			// Может ли данная шашка съесть ещё
@@ -581,12 +581,12 @@ bool rules(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 			{
 				std::cout << "Введите следующую позицию шашки\nПример(d6f4): ";
 				std::string step;
-				check_input(step);
+				check_input(step, player_draw, desk, color_passage);
 				// Правильность хода
-				while (move_checkers(desk, step, color_passage) != true)
+				while (move_checkers(desk, step, color_passage, player_draw) != true)
 				{
 					std::cout << "Неправильный ход!\n";
-					check_input(step);
+					check_input(step, player_draw, desk, color_passage);
 				}
 			}
 			return true;
@@ -598,7 +598,8 @@ bool rules(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 		(*desk)[matrix_n.y][matrix_n.x].figure_type == Empty &&
 		(*desk)[matrix_c.y][matrix_c.x].figure_color == color_passage)
 	{
-		return king(desk, matrix_c, matrix_n, enemy_checker, color_passage);
+		return king(desk, matrix_c, matrix_n, enemy_checker, color_passage, 
+			player_draw);
 	}
 	return false;
 }
