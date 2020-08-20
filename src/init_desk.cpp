@@ -38,16 +38,12 @@ Desk init_desk()
 			{
 				x = 1;
 			}
-			// for (; x < 8; x += 2)
-			// {
-			// 	desk[y][x].figure_type = Checker;
-			// 	desk[y][x].figure_color = (Figure_Color) color;
-			// }
+			for (; x < 8; x += 2)
+			{
+				desk[y][x].figure_type = Checker;
+				desk[y][x].figure_color = (Figure_Color) color;
+			}
 		}
-		desk[0][0].figure_type = King;
-		desk[0][0].figure_color = White;
-		desk[6][6].figure_type = Checker;
-		desk[6][6].figure_color = Black;
 	}
 	return desk;
 }

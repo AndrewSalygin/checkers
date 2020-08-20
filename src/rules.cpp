@@ -1,6 +1,7 @@
 #include "../include/rules.h"
 
-bool if_in_hit_checker(Desk *desk, Coordinate matrix_c, Coordinate matrix_n,
+// Функция удара для дамок и шашек
+bool if_in_hit_checker_n_king(Desk *desk, Coordinate matrix_c, Coordinate matrix_n,
 		Coordinate &enemy_checker)
 {
 	if ((*desk)[enemy_checker.y][enemy_checker.x].figure_type != Empty &&
@@ -13,6 +14,7 @@ bool if_in_hit_checker(Desk *desk, Coordinate matrix_c, Coordinate matrix_n,
 	return false;
 }
 
+// Операции в массиве
 void func_in_hit_n_step(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n)
 {
 	// Меняем элементы в массиве друг с другом 
@@ -22,18 +24,25 @@ void func_in_hit_n_step(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n)
 	clear_element((*desk)[matrix_c.y][matrix_c.x]);
 }
 
+// Ходит дамка
 bool step_king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n)
 {
+	// Запоминаем переменные для дальнейшего их изменения
 	int y_c = matrix_c.y;
 	int y_n = matrix_n.y;
 	int x_c = matrix_c.x;
 	int x_n = matrix_n.x;
+
+	// Ходим только по диагоналям y_c = x_c && y_n = x_n, поэтому x не проверяем
 	while (y_c != y_n)
 	{
+		// Вверх
 		if (matrix_n.y > matrix_c.y)
 		{
+			// Вправо
 			if (matrix_n.x > matrix_c.x)
 			{
+				// Если следущая клетка пустая
 				if ((*desk)[y_c + 1][x_c + 1].figure_type == Empty)
 				{
 					++y_c;
@@ -44,6 +53,7 @@ bool step_king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n)
 					return false;
 				}
 			}
+			// Влево
 			else
 			{
 				if ((*desk)[y_c + 1][x_c - 1].figure_type == Empty)
@@ -57,8 +67,10 @@ bool step_king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n)
 				}
 			}
 		}
+		// Вниз
 		else
 		{
+			// Вправо
 			if (matrix_n.x > matrix_c.x)
 			{
 				if ((*desk)[y_c - 1][x_c + 1].figure_type == Empty)
@@ -71,6 +83,7 @@ bool step_king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n)
 					return false;
 				}
 			}
+			// Влево
 			else
 			{
 				if ((*desk)[y_c - 1][x_c - 1].figure_type == Empty)
@@ -88,14 +101,18 @@ bool step_king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n)
 	return true;
 }
 
+// Король атакует
 bool hit_king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n, 
 	Coordinate &enemy_checker)
 {
+	// Количество вражеских фигур на пути
 	int count = 0;
+
 	int y_c = matrix_c.y;
 	int y_n = matrix_n.y;
 	int x_c = matrix_c.x;
 	int x_n = matrix_n.x;
+
 	while (y_c != y_n)
 	{
 		if (matrix_n.y > matrix_c.y)
@@ -111,8 +128,12 @@ bool hit_king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 				{
 					++y_c;
 					++x_c;
+
+					// Запоминаем координаты вражеской фигуры
 					enemy_checker.y = y_c;
 					enemy_checker.x = x_c;
+
+					// Две подряд фигуры не могут стоять на пути
 					++count;
 				}
 			}
@@ -171,76 +192,126 @@ bool hit_king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 	}
 	if (count == 1)
 	{
-		return if_in_hit_checker(desk, matrix_c, matrix_n, enemy_checker);
+		return if_in_hit_checker_n_king(desk, matrix_c, matrix_n, enemy_checker);
 	}
 	return false;
 }
 
+
+bool check_current_hit_king(Desk *desk, Coordinate &enemy_checker,
+									Coordinate &matrix_c)
+{
+	Coordinate coordinate_n;
+	Coordinate inner;
+	// Вверх влево
+	inner.y = matrix_c.y + 1;
+	inner.x = matrix_c.x - 1;
+	while (inner.y < 7 && inner.x > 0)
+	{
+		if ((*desk)[inner.y][inner.x].figure_type != Empty)
+		{
+			if ((*desk)[inner.y + 1][inner.x - 1].figure_type == Empty)
+			{
+				++inner.y;
+				--inner.x;
+				break;
+			}
+		}
+		++inner.y;
+		--inner.x;
+	}
+	if (hit_king(desk, matrix_c, inner, enemy_checker))
+	{
+		return true;
+	}
+	// Вниз вправо
+	inner.y = matrix_c.y - 1;
+	inner.x = matrix_c.x + 1;
+	while (inner.x < 7 && inner.y > 0)
+	{
+		if ((*desk)[inner.y][inner.x].figure_type != Empty)
+		{
+			if ((*desk)[inner.y - 1][inner.x + 1].figure_type == Empty)
+			{
+				--inner.y;
+				++inner.x;
+				break;
+			}
+		}
+		--inner.y;
+		++inner.x;
+	}
+	if (hit_king(desk, matrix_c, inner, enemy_checker))
+	{
+		return true;
+	}
+
+	// Вправо вверх
+	inner.y = matrix_c.y + 1;
+	inner.x = matrix_c.x + 1;
+
+	while (inner.y < 7 && inner.x < 7)
+	{
+		if ((*desk)[inner.y][inner.x].figure_type != Empty)
+		{
+			if ((*desk)[inner.y + 1][inner.x + 1].figure_type == Empty)
+			{
+				++inner.y;
+				++inner.x;
+				break;
+			}
+		}
+		++inner.y;
+		++inner.x;
+	}
+	if (hit_king(desk, matrix_c, inner, enemy_checker))
+	{
+		return true;
+	}
+
+	// Вниз влево
+	inner.y = matrix_c.y - 1;
+	inner.x = matrix_c.x - 1;
+	while (inner.y > 0 && inner.x > 0)
+	{
+		if ((*desk)[inner.y][inner.x].figure_type != Empty)
+		{
+			if ((*desk)[inner.y - 1][inner.x - 1].figure_type == Empty)
+			{
+				--inner.y;
+				--inner.x;
+				break;
+			}
+		}
+		--inner.y;
+		--inner.x;
+	}
+	if (hit_king(desk, matrix_c, inner, enemy_checker))
+	{
+		return true;
+	}
+	return false;
+}
+
+// Проверка, есть ли вариант удара, вместо ходьбы фигуры
 bool check_all_hit_king(Desk *desk, Figure_Color &color_passage,
 					 Coordinate &enemy_checker)
 {
+	// Внутренние координаты функции
 	Coordinate coordinate_c;
 	Coordinate coordinate_n;
-	std::cout << "fef";
+
 	for (int y = 0; y < 8; ++y)
 	{
 		for (int x = 0; x < 8; ++x)
 		{
+			// Если король
 			if ((*desk)[y][x].figure_type == King &&
 				(*desk)[y][x].figure_color == color_passage)
 			{
 				coordinate_c.x = x;
 				coordinate_c.y = y;
-				int inner_y = y;
-				int inner_x = x;
-				for (; inner_y < 6, inner_x < 6; ++inner_y, ++inner_x)
-				{
-					if ((*desk)[inner_y][inner_x].figure_type != Empty)
-					{
-						if ((*desk)[inner_y + 1][inner_x + 1].figure_type == Empty &&
-							inner_y + 1 < 8 && inner_x + 1 < 8)
-						{
-							coordinate_n.y = inner_y + 1;
-							coordinate_n.x = inner_x + 1;
-							break;
-						}
-					}
-				}
-				if (hit_king(desk, coordinate_c, coordinate_n, enemy_checker))
-				{
-					return true;
-				}
-				std::cout << "fef";
-				while (y > 1)
-				{
-					coordinate_n.y = y - 2;
-				}				
-				if (hit_king(desk, coordinate_c, coordinate_n, enemy_checker))
-				{
-					return true;
-				}
-				while (x > 1)
-				{
-					coordinate_n.x = x - 2;
-				}
-				while (y < 6)
-				{
-					coordinate_n.y = y + 2;	
-				}
-				if (hit_king(desk, coordinate_c, coordinate_n, enemy_checker))
-				{
-					return true;
-				}
-				while (y > 1)
-				{
-					coordinate_n.y = y - 2;
-				}
-				while (x > 1)
-				{
-					coordinate_n.x = x - 2;
-				}
-				
-				if (hit_king(desk, coordinate_c, coordinate_n, enemy_checker))
+				if (check_current_hit_king(desk, enemy_checker, coordinate_c))
 				{
 					return true;
 				}
@@ -250,11 +321,16 @@ bool check_all_hit_king(Desk *desk, Figure_Color &color_passage,
 	return false;
 }
 
+int count = 0;
+
+// Король
 bool king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n, 
 	Coordinate &enemy_checker, Figure_Color &color_passage)
 {
+	// Ходим только по диагоналям
 	if (abs(matrix_n.y - matrix_c.y) == abs(matrix_n.x - matrix_c.x))
 	{
+		// Проверяем ходит ли дамка
 		if (step_king(desk, matrix_c, matrix_n))
 		{
 			if (!check_all_hit_king(desk, color_passage, enemy_checker))
@@ -265,13 +341,12 @@ bool king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 			return false;
 		}
 
+		// Проверяем ударяет ли король
 		if (hit_king(desk, matrix_c, matrix_n, enemy_checker))
 		{
-			std::cout << "fef2";
 			func_in_hit_n_step(desk, matrix_c, matrix_n);
 			clear_element((*desk)[enemy_checker.y][enemy_checker.x]);
-			while (check_all_hit_king(desk, color_passage, enemy_checker) ==
-					true)
+			if (check_current_hit_king(desk, enemy_checker, matrix_n))
 			{
 				std::cout << "Введите следующую позицию дамки\nПример(e1b4): ";
 				std::string step;
@@ -289,6 +364,7 @@ bool king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 	return false;
 }
 
+// При достижении последней горизонтали происходит превращение шашки в дамку
 void checker_to_king(Desk *desk, Coordinate &matrix_c)
 {
 	if (matrix_c.y == 7 && (*desk)[matrix_c.y][matrix_c.x].figure_color == White)
@@ -299,21 +375,9 @@ void checker_to_king(Desk *desk, Coordinate &matrix_c)
 	{
 		(*desk)[matrix_c.y][matrix_c.x].figure_type = King;
 	}
-	// while (check_all_hit_checker(desk, color_passage, enemy_checker) ==
-	// 			true)
-	// {
-	// 	std::cout << "Введите следующую позицию дамки\nПример(d8g5): ";
-	// 	std::string step;
-	// 	check_input(step);
-	// 	// Правильность хода
-	// 	while (move_checkers(desk, step, color_passage) != true)
-	// 	{
-	// 		std::cout << "Неправильный ход!\n";
-	// 		check_input(step);
-	// 	}
-	// }
 }
 
+// Шашка атакует
 bool hit_checker(Desk *desk, Coordinate matrix_c, Coordinate matrix_n,
 		Coordinate &enemy_checker)
 {
@@ -335,27 +399,28 @@ bool hit_checker(Desk *desk, Coordinate matrix_c, Coordinate matrix_n,
 	}
 	if (matrix_n.y == matrix_c.y + 2 && matrix_n.x == matrix_c.x + 2)
 	{
-		if (if_in_hit_checker(desk, matrix_c, matrix_n, enemy_checker))
+		if (if_in_hit_checker_n_king(desk, matrix_c, matrix_n, enemy_checker))
 			return true;
 	}
 	if (matrix_n.y == matrix_c.y + 2 && matrix_n.x == matrix_c.x - 2)
 	{
-		if (if_in_hit_checker(desk, matrix_c, matrix_n, enemy_checker))
+		if (if_in_hit_checker_n_king(desk, matrix_c, matrix_n, enemy_checker))
 			return true;
 	}
 	if (matrix_n.y == matrix_c.y - 2 && matrix_n.x == matrix_c.x + 2)
 	{
-		if (if_in_hit_checker(desk, matrix_c, matrix_n, enemy_checker))
+		if (if_in_hit_checker_n_king(desk, matrix_c, matrix_n, enemy_checker))
 			return true;
 	}
 	if (matrix_n.y == matrix_c.y - 2 && matrix_n.x == matrix_c.x - 2)
 	{
-		if (if_in_hit_checker(desk, matrix_c, matrix_n, enemy_checker))
+		if (if_in_hit_checker_n_king(desk, matrix_c, matrix_n, enemy_checker))
 			return true;
 	}
 	return false;
 }
 
+// Может ли шашка продолжить поедать шашки
 bool check_current_hit_checker(Desk *desk, Coordinate &enemy_checker,
 									Coordinate &matrix_c)
 {
@@ -407,6 +472,7 @@ bool check_current_hit_checker(Desk *desk, Coordinate &enemy_checker,
 	return false;
 }
 
+// Проверка, может ли шашка не пойти, а съесть фигуру
 bool check_all_hit_checker(Desk *desk, Figure_Color &color_passage,
 					 Coordinate &enemy_checker)
 {
@@ -421,48 +487,7 @@ bool check_all_hit_checker(Desk *desk, Figure_Color &color_passage,
 			{
 				coordinate_c.x = x;
 				coordinate_c.y = y;
-				if (y < 6)
-				{
-					coordinate_n.y = y + 2;
-				}
-				if (x < 6)
-				{
-					coordinate_n.x = x + 2;
-				}
-				if (hit_checker(desk, coordinate_c, coordinate_n, enemy_checker))
-				{
-					return true;
-				}
-				if (y > 1)
-				{
-					coordinate_n.y = y - 2;
-				}				
-				if (hit_checker(desk, coordinate_c, coordinate_n, enemy_checker))
-				{
-					return true;
-				}
-				if (x > 1)
-				{
-					coordinate_n.x = x - 2;
-				}
-				if (y < 6)
-				{
-					coordinate_n.y = y + 2;	
-				}
-				if (hit_checker(desk, coordinate_c, coordinate_n, enemy_checker))
-				{
-					return true;
-				}
-				if (y > 1)
-				{
-					coordinate_n.y = y - 2;
-				}
-				if (x > 1)
-				{
-					coordinate_n.x = x - 2;
-				}
-				
-				if (hit_checker(desk, coordinate_c, coordinate_n, enemy_checker))
+				if (check_current_hit_checker(desk, enemy_checker, coordinate_c))
 				{
 					return true;
 				}
@@ -472,6 +497,7 @@ bool check_all_hit_checker(Desk *desk, Figure_Color &color_passage,
 	return false;
 }
 
+// Шашка ходит
 bool step_checker(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 		int &next_line, Figure_Color &color_passage)
 {
@@ -485,6 +511,7 @@ bool step_checker(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 	return false;
 }
 
+// Правила игры
 bool rules(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 			Figure_Color &color_passage)
 {
@@ -507,15 +534,20 @@ bool rules(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 		// Шаг:
 		if (step_checker(desk, matrix_c, matrix_n, next_line, color_passage))
 		{
+			// Может ли другая шашка ударить
 			if (check_all_hit_checker(desk, color_passage, enemy_checker))
 			{
 				return false;
 			}
+			// // Может ли дамка ударить
 			if (check_all_hit_king(desk, color_passage, enemy_checker))
 			{
 				return false;
 			}
+			// Действие в массиве
 			func_in_hit_n_step(desk, matrix_c, matrix_n);
+
+			// Проверка на последнюю горизонталь
 			checker_to_king(desk, matrix_n);
 			return true;
 		}
@@ -526,9 +558,26 @@ bool rules(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 		{
 			func_in_hit_n_step(desk, matrix_c, matrix_n);
 			clear_element((*desk)[enemy_checker.y][enemy_checker.x]);
+
 			checker_to_king(desk, matrix_n);
-			while (check_current_hit_checker(desk, matrix_c, enemy_checker) ==
-					true)
+
+			// Проверяем может ли превращённая шашка, которая только что съела 
+			//вражескую фигуру продолжить есть фигуры
+			if (check_current_hit_king(desk, enemy_checker, matrix_n) &&
+				(*desk)[matrix_n.y][matrix_n.x].figure_type == King)
+			{
+				std::cout << "Введите следующую позицию дамки\nПример(d8g5): ";
+				std::string step;
+				check_input(step);
+				// Правильность хода
+				while (move_checkers(desk, step, color_passage) != true)
+				{
+					std::cout << "Неправильный ход!\n";
+					check_input(step);
+				}
+			}
+			// Может ли данная шашка съесть ещё
+			if (check_current_hit_checker(desk, enemy_checker, matrix_n))
 			{
 				std::cout << "Введите следующую позицию шашки\nПример(d6f4): ";
 				std::string step;

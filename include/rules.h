@@ -6,7 +6,6 @@
 #include "actions_on_array.h"
 #include "input.h"
 
-void checker_to_king(Desk *desk, Coordinate &matrix_c);
 bool if_in_hit_checker(Desk *desk, Coordinate matrix_c, Coordinate matrix_n,
 		Coordinate &enemy_checker);
 void func_in_hit_n_step(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n);
