@@ -3,10 +3,7 @@
 
 #include "../include/begin_game.h"
 
-int main() {
-    setlocale (LC_ALL, "ru_RU.UTF-8");
-    
-    // Create menu doo
+int main() {    
     // Начинаем игру
     begin_game();
 

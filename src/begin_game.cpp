@@ -8,6 +8,7 @@ void begin_game()
 
 	// Ход начинается с black, т.к print_desk() поменяет его на white
 	Figure_Color color_passage = Black;
+	
 	// Рисуем начальную доску
 	print_desk(desk_ptr, color_passage);
 

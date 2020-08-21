@@ -5,7 +5,10 @@ Desk init_desk()
 	// Создаём пустую доску
 	Desk desk = {NULL};
 
+	// Горизонталь
 	int y;
+
+	// Последняя горизонталь
 	int max;
 
 	// Заполняем поле шашками
@@ -38,6 +41,8 @@ Desk init_desk()
 			{
 				x = 1;
 			}
+
+			// Процесс заполнения
 			for (; x < 8; x += 2)
 			{
 				desk[y][x].figure_type = Checker;
