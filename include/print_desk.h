@@ -6,6 +6,6 @@
 #include "constants.h"
 #include "color_scheme.h"
 
-void print_desk(const Desk *desk, Figure_Color &color_passage);
+void print_desk(const Desk *desk, const Figure_Color &color_passage);
 
 #endif

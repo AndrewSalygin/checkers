@@ -12,11 +12,8 @@ void print_number_column(int &y)
 		g_un_number_color << " ";
 }
 
-void print_letter_line()
+void cycle_in_letter_line(char &letter, bool &inc)
 {
-	// Буква A
-	char letter = 65;
-
 	// Рисуем клетки для обозначений игрового поля (Буквы)
 	for (int x = 0; x < 10; ++x)
 	{
@@ -29,14 +26,45 @@ void print_letter_line()
 			continue;
 		}
 
-		// Выводим буквенные обозначения
-		std::cout << " " << g_letter_color << letter++ << g_un_letter_color <<
-			" " << "";
+		// Если буквы выводятся по алфавиту
+		if (inc)
+		{
+			// Выводим буквенные обозначения
+			std::cout << " " << g_letter_color << letter++ << g_un_letter_color 
+			<< " " << "";
+		}
+		// Против
+		else
+		{
+			// Выводим буквенные обозначения
+			std::cout << " " << g_letter_color << letter-- << g_un_letter_color 
+			<< " " << "";
+		}
+		
 	}
 	std::cout << VERTICAL_LINE;
+}
+
+void print_letter_line()
+{
+	// Для белых
+	// Буква A
+	char letter = 65;
+	bool inc    = true;
+
+	cycle_in_letter_line(letter, inc);
 
 	// Оставляем пробел
 	print_space();
+
+	// Для чёрных
+	// Буква H
+	letter = 72;
+	inc    = false;
+
+	cycle_in_letter_line(letter, inc);
+
+	std::cout << '\n';
 }
 
 // Выводим данные из массива в виде фигур
@@ -87,143 +115,162 @@ void print_line(const std::string &line)
 
 void print_horizontal_line()
 {
-	// Рисуем начало нижней части клетки
-	std::cout << BEGIN_BOTTOM_CELL_LINE;
+	for (int i = 0; i < 2; ++i)
+	{
+		// Рисуем начало нижней части клетки
+		std::cout << BEGIN_BOTTOM_CELL_LINE;
 
-	// Выводим нижнюю линию, между игровым полем и буквенными значениями
-	print_line(INTERCELLULAR_LINE);
+		// Выводим нижнюю линию, между игровым полем и буквенными значениями
+		print_line(INTERCELLULAR_LINE);
 
-	// Рисуем конец нижней части клетки
-	std::cout << END_BOTTOM_CELL_LINE;
+		// Рисуем конец нижней части клетки
+		std::cout << END_BOTTOM_CELL_LINE;
 
-	// Оставляем пробел
-	print_space();
+		// Оставляем пробел
+		print_space();
+	}
+}
+
+void if_in_cycle(const Desk *desk, int &y, Coordinate &matrix, Figure &cell)
+{
+	// Рисуем первую вертикальную линию
+	std::cout << VERTICAL_LINE;
+
+	// Раскрашиваем клетки в чёрный и белый
+	if ((y % 2 != 0 && matrix.x % 2 == 0) ||
+			((y % 2 == 0 && matrix.x % 2 != 0)))
+	{
+		std::cout << g_black_cell;
+	} 
+	else
+	{
+		std::cout << g_white_cell;
+	}
+
+	matrix.y = MAX_LINES - y - 1;
+	std::cout << " " << int_to_checkers(desk, matrix, cell) << " \e[0m"; 
 }
 
 // Повторяющийся цикл при смене вида от белых и чёрных фигур
-void cycle_in_swap_desk(const Desk *desk, int &y, Coordinate &matrix,
-							Figure &cell)
+void cycle_in_main_desk(const Desk *desk, int &y, Coordinate &matrix,
+								Figure &cell, const Figure_Color &local_color)
 {
 	// Рисуем цифровые обозначения клеток
 	print_number_column(y);
 
-	// Выводим фигуры с вертикальными линиями
-	for (matrix.x = 0; matrix.x < 8; ++matrix.x)
+	if (local_color == White)
 	{
-		// Рисуем первую вертикальную линию
+		// Выводим фигуры с вертикальными линиями
+		for (matrix.x = 0; matrix.x < 8; ++matrix.x)
+		{
+			if_in_cycle(desk, y, matrix, cell);
+		}
+
+		// Рисуем цифровые обозначения клеток
+		print_number_column(y);
+
+		// Рисуем последнюю вертикальную линию
 		std::cout << VERTICAL_LINE;
-
-		// Раскрашиваем клетки в чёрный и белый
-		if ((y % 2 != 0 && matrix.x % 2 == 0) ||
-				((y % 2 == 0 && matrix.x % 2 != 0)))
-		{
-			std::cout << g_black_cell;
-		} 
-		else
-		{
-			std::cout << g_white_cell;
-		} 
-		matrix.y = MAX_LINES - y - 1;
-		std::cout << " " << int_to_checkers(desk, matrix, cell) << " \e[0m";
+		
+		print_space();
 	}
-	print_number_column(y);
+	else
+	{
+		// Выводим фигуры с вертикальными линиями
+		for (matrix.x = 7; matrix.x >= 0; --matrix.x)
+		{
+			if_in_cycle(desk, y, matrix, cell);
+		}
 
-	// Рисуем последнюю вертикальную линию
-	std::cout << VERTICAL_LINE;
-	
-	print_space();
+		// Рисуем цифровые обозначения клеток
+		print_number_column(y);
+
+		// Рисуем последнюю вертикальную линию
+		std::cout << VERTICAL_LINE;
+	}
 }
 
-// Переворачивает доску для другого игрока
-void swap_desk(const Desk *desk, Figure_Color &color_passage)
+// Рисует основную часть досок
+void print_main_desk(const Desk *desk)
 {
 	// Координаты клетки
 	Coordinate matrix;
 
-	// Шашки или пустое место
+	// Сама клетка
 	Figure cell;
+
+	// Цвет для которого отрисовываем доску
+	Figure_Color local_color;
 
 	// Рисуем доски
 	for (int y_w = 7, y_b = 0; y_w >= 0 && y_b < 8; --y_w, ++y_b)
 	{
-		// Рисуем цифровые обозначения клеток
-		cycle_in_swap_desk(desk, y_b, matrix, cell);
-		color_passage = White;
-		cycle_in_swap_desk(desk, y_w, matrix, cell);
+		// Для белых
+		local_color = White;
+		cycle_in_main_desk(desk, y_b, matrix, cell, local_color);
+
+		// Для чёрных
+		local_color = Black;
+		cycle_in_main_desk(desk, y_w, matrix, cell, local_color);
+
 		std::cout << '\n';
+
 		// Рисуем горизонтальные линии между клетками игрового поля
 		print_horizontal_line();
-		print_horizontal_line();
+
 		std::cout << '\n';
 	}
 }
 
-void print_rules()
+// Отображаем подсказки
+void print_hint()
 {
 	std::cout << "Чтобы выйти из игры напишите: выйти\n" <<
 	"Чтобы предложить ничью: ничья\nЧтобы сдаться: сдаюсь\n";
+}
 
+// Рисует края досок
+void print_group(const std::string LEFT_CORNER, const std::string RIGHT_CORNER,
+					const std::string LINE)
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		std::cout << LEFT_CORNER;
+		print_line(LINE);
+		std::cout << RIGHT_CORNER;
+
+		// Оставляем пробел
+		print_space();
+	}
+	std::cout << '\n';
 }
 
 // Рисуем доску
-void print_desk(const Desk *desk, Figure_Color &color_passage)
+void print_desk(const Desk *desk, const Figure_Color &color_passage)
 {
 	// Очищаем терминал, прежде чем нарисовать доску
 	system("clear");
 
-	// Выводим правила игры, вверху доски
-	print_rules();
+	// Выводим подсказки, вверху досок
+	print_hint();
 
-	// Рисуем вехнюю часть первой доски
-	std::cout << LEFT_TOP_CORNER;
-	print_line(TOP_LINE);
-	std::cout << RIGHT_TOP_CORNER;
+	// Рисуем вехнюю часть досок
+	print_group(LEFT_TOP_CORNER, RIGHT_TOP_CORNER, TOP_LINE);
 
-	// Оставляем пробел
-	print_space();
-
-	// Рисуем вехнюю часть второй доски
-	std::cout << LEFT_TOP_CORNER;
-	print_line(TOP_LINE);
-	std::cout << RIGHT_TOP_CORNER << '\n';
-
-	// Рисуем буквенные обозначения для первой доски
+	// Рисуем верхние буквенные обозначения досок
 	print_letter_line();
-
-	// Рисуем буквенные обозначения для второй доски
-	print_letter_line();
-
-	std::cout << '\n';
-
-	// Рисуем границу между буквенными обозначениями и фигурами
-	print_horizontal_line();
 
 	// Рисуем границу между буквенными обозначениями и фигурами
 	print_horizontal_line();
 
 	std::cout << '\n';
 
-	// Рисуем основную часть доски
-	swap_desk(desk, color_passage);
+	// Рисуем основную часть досок
+	print_main_desk(desk);
 	
-	// Рисуем буквенные обозначения
+	// Рисуем нижние буквенные обозначения досок
 	print_letter_line();
 
-	// Рисуем буквенные обозначения для второй доски
-	print_letter_line();
-
-	std::cout << '\n';
-
-	// Рисуем нижнюю часть доски
-	std::cout << LEFT_BOTTOM_CORNER;
-	print_line(BOTTOM_LINE);
-	std::cout << RIGHT_BOTTOM_CORNER;
-
-	// Оставляем пробел
-	print_space();
-
-	// Рисуем нижнюю часть доски
-	std::cout << LEFT_BOTTOM_CORNER;
-	print_line(BOTTOM_LINE);
-	std::cout << RIGHT_BOTTOM_CORNER << '\n';
+	// Рисуем нижнюю часть досок
+	print_group(LEFT_BOTTOM_CORNER, RIGHT_BOTTOM_CORNER, BOTTOM_LINE);
 }

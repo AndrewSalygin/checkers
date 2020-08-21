@@ -1,7 +1,7 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-// #include <regex>
+#include <regex>
 #include "print_desk.h"
 #include "move_checkers.h"
 #include "actions_on_game.h"
