@@ -3,7 +3,7 @@
 
 #include "init_desk.h"
 #include "print_desk.h"
-#include "input.h"
+#include "game.h"
 
 void begin_game();
 

@@ -3,7 +3,6 @@
 
 #include "input.h"
 #include "general_functions.h"
-#include "checker.h"
 #include "king.h"
 
 bool rules(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n, 
