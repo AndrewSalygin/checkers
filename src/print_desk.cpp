@@ -3,8 +3,8 @@
 void print_number_column(int &y)
 {
 	// Рисуем клетки для обозначений игрового поля (Цифры)
-	std::cout << VERTICAL_LINE << NUMBER_COLOR << " " << MAX_LINES - y <<
-		UN_NUMBER_COLOR << " ";
+	std::cout << VERTICAL_LINE << g_number_color << " " << MAX_LINES - y <<
+		g_un_number_color << " ";
 }
 
 void print_letter_line()
@@ -25,7 +25,7 @@ void print_letter_line()
 		}
 
 		// Выводим буквенные обозначения
-		std::cout << " " << LETTER_COLOR << letter++ << UN_LETTER_COLOR <<
+		std::cout << " " << g_letter_color << letter++ << g_un_letter_color <<
 			" " << "";
 	}
 	std::cout << VERTICAL_LINE << '\n';
@@ -34,6 +34,7 @@ void print_letter_line()
 // Выводим данные из массива в виде фигур
 std::string int_to_checkers(const Desk *desk, Coordinate &matrix, Figure &cell)
 {
+	// Выбираем клетку
 	cell = (*desk)[matrix.y][matrix.x];
 	
 	// Раскраска пешек
@@ -42,11 +43,11 @@ std::string int_to_checkers(const Desk *desk, Coordinate &matrix, Figure &cell)
 		if (cell.figure_color == Black) 
 		{
 			// Цвет шашки                                 
-			return BLACK_CHECKERS + "⛂";
+			return g_black_checker + "⛂";
 		} 
 		if (cell.figure_color == White)
 		{
-			return WHITE_CHECKERS + "⛂";
+			return g_white_checker + "⛂";
 		} 
 	}
 	// Раскраска дамок
@@ -55,11 +56,11 @@ std::string int_to_checkers(const Desk *desk, Coordinate &matrix, Figure &cell)
 		if (cell.figure_color == Black) 
 		{
 			// Цвет шашки                                 
-			return BLACK_CHECKERS + "⛃";
+			return g_black_checker + "⛃";
 		} 
 		if (cell.figure_color == White)
 		{
-			return WHITE_CHECKERS + "⛃";
+			return g_white_checker + "⛃";
 		} 
 	}
 
@@ -98,17 +99,18 @@ void cycle_in_swap_desk(const Desk *desk, int &y, Coordinate &matrix,
 	// Выводим фигуры с вертикальными линиями
 	for (matrix.x = 0; matrix.x < 8; ++matrix.x)
 	{
+		// Рисуем первую вертикальную линию
 		std::cout << VERTICAL_LINE;
 
 		// Раскрашиваем клетки в чёрный и белый
 		if ((y % 2 != 0 && matrix.x % 2 == 0) ||
 				((y % 2 == 0 && matrix.x % 2 != 0)))
 		{
-			std::cout << BLACK_CELL;
+			std::cout << g_black_cell;
 		} 
 		else
 		{
-			std::cout << WHITE_CELL;
+			std::cout << g_white_cell;
 		} 
 		matrix.y = MAX_LINES - y - 1;
 		std::cout << " " << int_to_checkers(desk, matrix, cell) << " \e[0m";
@@ -125,8 +127,10 @@ void cycle_in_swap_desk(const Desk *desk, int &y, Coordinate &matrix,
 // Переворачивает доску для другого игрока
 void swap_desk(const Desk *desk, Figure_Color &color_passage)
 {
+	// Координаты клетки
 	Coordinate matrix;
 
+	// Шашки или пустое место
 	Figure cell;
 
 	// Рисуем доску для белых
@@ -153,7 +157,7 @@ void swap_desk(const Desk *desk, Figure_Color &color_passage)
 void print_rules()
 {
 	std::cout << "Чтобы выйти из игры напишите: выйти\n" <<
-	"Чтобы предложить ничью напишите: ничья\nЧтобы сдаться: сдаюсь\n";
+	"Чтобы предложить ничью: ничья\nЧтобы сдаться: сдаюсь\n";
 
 }
 
@@ -163,6 +167,7 @@ void print_desk(const Desk *desk, Figure_Color &color_passage)
 	// Очищаем терминал, прежде чем нарисовать доску
 	system("clear");
 
+	// Выводим правила игры, вверху доски
 	print_rules();
 
 	// Рисуем вехнюю часть доски

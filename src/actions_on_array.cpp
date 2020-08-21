@@ -8,7 +8,7 @@ void clear_element(Figure &elem)
 }
 
 // Меняем фигуры местами
-void swap_checkers(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n)
+void swap_checkers(Desk *desk, const Coordinate &matrix_c, const Coordinate &matrix_n)
 {
 	(*desk)[matrix_n.y][matrix_n.x].figure_type  =
 		(*desk)[matrix_c.y][matrix_c.x].figure_type;
