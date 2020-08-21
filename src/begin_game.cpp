@@ -1,5 +1,5 @@
 #include "../include/begin_game.h"
-
+    
 void begin_game()
 {
 	// Подготавливаем доску для игры
@@ -7,12 +7,12 @@ void begin_game()
 	Desk *desk_ptr = &desk;
 
 	// Ход начинается с black, т.к print_desk() поменяет его на white
-	Figure_Color color_passage = Black;
+	Figure_Color color_passage = White;
 	
 	// Рисуем начальную доску
 	print_desk(desk_ptr, color_passage);
 
 	// Начинаем игру
-	game(desk_ptr, color_passage);
+	// game(desk_ptr, color_passage);
 }
  

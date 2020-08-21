@@ -31,9 +31,10 @@ void game(Desk *desk, Figure_Color &color_passage)
 			check_input(step, players_draw, desk, color_passage);
 		} while (move_checkers(desk, step, color_passage, players_draw) != true 
 								&& step != "сдаюсь" && step != "выйти");
-		
+
 		// Отрисовываем доску заново
 		print_desk(desk, color_passage);
+		
 	} while (quantity_checkers(desk, color_passage) && !deadlock(desk) &&
 				step != "выйти" && step != "сдаюсь" && !players_draw);
 	
