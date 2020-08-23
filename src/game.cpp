@@ -42,13 +42,12 @@ void game(Desk *desk, Figure_Color &color_passage)
 	if (step == "выйти")
 	{
 		std::cout << '\n';
-		system("clear");
-		exit(0);
+		menu();
 	}
 
 	if (step == "сдаюсь")
 	{
-		if (color_passage == Black)
+		if (color_passage == White)
 		{
 			std::cout << '\n';
 			std::cout << "Победили чёрные!\n";

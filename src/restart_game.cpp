@@ -31,7 +31,7 @@ bool question_restart_game(Desk *desk)
 	if (answer == "нет")
 	{
 		system("clear");
-		exit(0);
+		menu();
 	}
 	return false;
 }

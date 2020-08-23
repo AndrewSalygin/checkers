@@ -3,6 +3,7 @@
 
 #include "input.h"
 #include "deadlock.h"
+#include "menu.h"
 
 void game(Desk *desk, Figure_Color &color_passage);
 

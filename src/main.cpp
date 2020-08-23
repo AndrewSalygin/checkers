@@ -1,13 +1,11 @@
-// Для setlocale();
-#include <iostream>
-#include <ctime>
+#include "../include/main.h"
+int main() 
+{
+	// Читаем конфиг
+	read_config();
 
-#include "../include/begin_game.h"
-
-int main() {    
-	
-    // Начинаем игру
-    begin_game();
+	// Выводим начальное меню
+	menu();
 
 	return 0;
 }

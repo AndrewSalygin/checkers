@@ -222,11 +222,58 @@ void print_main_desk(const Desk *desk)
 	}
 }
 
+void print_space_hint()
+{
+	for (int i = 0; i < 21; ++i)
+	{
+		print_space();
+	}
+}
+
 // Отображаем подсказки
 void print_hint()
 {
-	std::cout << "Чтобы выйти из игры напишите: выйти\n" <<
-	"Чтобы предложить ничью: ничья\nЧтобы сдаться: сдаюсь\n";
+	std::string left_corner       = "\u256D";
+	std::string right_corner      = "\u256E";
+
+	print_space_hint();
+
+	std::cout << left_corner;
+
+	std::string line              = "\u2500";
+
+	for (int i = 0; i < 37; ++i)
+	{
+		std::cout << line;
+	}
+
+	std::cout << right_corner << '\n';
+
+	std::string vertical_line     = "\u2502";
+
+	print_space_hint();
+	std::cout << vertical_line << " Чтобы выйти в меню, напишите: выйти " <<
+	vertical_line << '\n';
+	print_space_hint();
+	std::cout << vertical_line << "    Чтобы предложить ничью: ничья    " <<
+	vertical_line << '\n'; 
+	print_space_hint();
+	std::cout << vertical_line << "        Чтобы сдаться: сдаюсь        " <<
+	vertical_line << '\n';
+
+	print_space_hint();
+	left_corner = "\u2570";
+
+	std::cout << left_corner;
+
+	for (int i = 0; i < 37; ++i)
+	{
+		std::cout << line;
+	}
+
+	right_corner = "\u256F";
+
+	std::cout << right_corner << '\n';
 }
 
 // Рисует края досок
