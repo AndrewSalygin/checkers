@@ -3,6 +3,7 @@
 
 #include "restart_game.h"
 
-bool deadlock(Desk *desk);
+bool deadlock(Desk *desk, Figure_Color &color_passage, Desk *copy_desk,
+				Figure_Color &copy_color_passage);
 
 #endif

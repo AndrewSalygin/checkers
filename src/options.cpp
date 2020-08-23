@@ -1,15 +1,19 @@
 #include "../include/options.h"
 
+// Выбор пункта в меню
 void options()
 {
-	std::string option;
+	// Пункт
+	std::string option = "";
+	
+	// Проверяем, есть ли такой пункт
 	do
 	{
 		std::cout << "\t    ";
 		std::cin >> option;
 	} while (option != "1" && option != "2" && option != "3" && option != "4" &&
 				option != "5");
-
+ 	
 	if (option == "1")
 	{
 		// Начинаем игру
@@ -17,37 +21,36 @@ void options()
 	}
 	if (option == "2")
 	{
-		// Очищаем терминал
-		system("clear");
-
 		// Инициализируем доску
 		Desk desk = init_desk();
 		Desk *desk_ptr = &desk;
 
 		// Рисуем начальную доску
 		print_desk(desk_ptr, None);
-		std::cout << "Настройте терминал так, чтобы доски gбыло хорошо видно\n" <<
+		std::cout << "Настройте терминал так, чтобы доски было хорошо видно\n" <<
 		"Ctrl++ - увеличить\nCtrl+- - уменьшить\nВведите выйти, чтобы " <<
 		"вернуться\n";
 		
+		// Выход
 		std::string exit;
 		do {
 			std::cin >> exit;
 		} while (exit != "выйти");
+
+		// Возвращаемся в меню
 		menu();
 	}
 	if (option == "3")
 	{
-		system("clear");
-
+		// Инициализируем доску
 		Desk desk = init_desk();
 		Desk *desk_ptr = &desk;
-		Figure_Color color_passage = None;
+		Figure_Color color_passage;
+
 		std::string answer_while;
 
 		do
 		{
-			answer_while = "";
 			// Рисуем начальную доску
 			print_desk(desk_ptr, color_passage);
 
@@ -90,54 +93,123 @@ void options()
 			call_cycles(desk_ptr, color_passage, inner_option, local_string,
 						g_letter_color, answer, text);
 
-			std::cout << "Повторить настройку?(да/нет): ";
+			std::cout << "Повторить настройку?(д/н): ";
 
-			while (answer_while != "да" && answer_while != "нет")
+			while (answer_while != "д" && answer_while != "н")
 			{
 				std::cin >> answer_while;
 			}
-		} while (answer_while != "нет");
+		} while (answer_while != "н");
 
+		// Сохраняем конфиг
 		save_config();
+
+		// Выходим в меню
 		menu();
 	}
 	if (option == "4")
 	{
-		Desk desk;
-		Desk *desk_ptr = &desk;
-		Figure_Color color_passage;
-		print_desk(desk_ptr, color_passage);
+		// Позиция фигуры в координатах
+		Coordinate matrix_c;
 
+		// Позиция фигуры в строке
 		std::string position;
 		do
 		{
-			std::cout << "Расставьте белые шашки, позже напишите 'продолжить'\n";
+			// Инициализируем доску
+			Desk desk = {NULL};
+			Desk *desk_ptr = &desk;
+			Figure_Color color_passage;
 			
+			// Выводим пустую доску
+			print_desk(desk_ptr, color_passage);
+
+			Figure_Type type = Checker;
+			Figure_Color color = White;
+
+			std::cout << "Укажите координаты всех белых шашек" <<
+					" по одной\n(чтобы убрать шашку, введите её координаты),\n" <<
+					"а позже напишите 'n': ";
+			
+			int count_white = 1;
+
+			cycle_before_filling(desk_ptr, color_passage, matrix_c, type, color,
+									count_white, position);
+			if (count_white < 12)
+			{
+				std::cout << "Укажите координаты всех белых дамок" <<
+					" по одной\n(чтобы убрать дамку, введите её координаты),\n" <<
+					"а позже напишите 'n': ";
+
+				type = King;
+				cycle_before_filling(desk_ptr, color_passage, matrix_c, type, color,
+										count_white, position);
+			}
+			
+			std::cout << "Укажите координаты всех чёрных шашек" <<
+					" по одной\n(чтобы убрать шашку, введите её координаты),\n" <<
+					"а позже напишите 'n': ";
+
+			int count_black = 1;
+			type = Checker;
+			color = Black;
+			cycle_before_filling(desk_ptr, color_passage, matrix_c, type, color,
+									count_black, position);
+
+			if (count_black < 12)
+			{
+				std::cout << "Укажите координаты всех чёрных дамок" <<
+					" по одной\n(чтобы убрать дамку, введите её координаты),\n" <<
+					"а позже напишите 'n': ";
+		
+				type = King;
+				cycle_before_filling(desk_ptr, color_passage, matrix_c, type, color,
+									count_black, position);
+			}
+			if (count_white == 1 || count_black == 1)
+			{
+				std::cout << "Фигур слишком мало. Настройте игру заново!\n\n" <<
+				"Введите любой текст, чтобы продолжить: ";
+				std::cin >> position;
+				continue;
+			}
+			std::cout << "Кто начинает ходить первым? (1 - Первый игрок, " << 
+			"2 - Второй игрок): ";
 			do
 			{
 				std::cin >> position;
-
-				// Выходим из режима редактора
-				if (position == "выйти")
+				if (position == "1")
 				{
+					color_passage = Black;
+				}
+				if (position == "2")
+				{
+					color_passage = White;
+				}
+			} while (position != "1" && position != "2" && position != "выйти");
+
+			std::cout << "\nХотите ли вы начать заполнение заново?(д/н): ";
+
+			do
+			{
+				std::cin >> position; 
+				if (position == "н")
+				{
+					std::cout << '\n';
+					print_desk(desk_ptr, color_passage);
+					game(desk_ptr, color_passage);
 					break;
 				}
-
-				// Если не ключевое слово
-				std::cout << "\nХод невозможен!\nВведите другой:\n";
-
-			} while (//!std::regex_match(position, std::regex("[a-h][1-8]"))
-				true); 
-		} while (position != "продолжить" && position != "выйти");
-		if (position == "выйти")
-		{
-			system("clear");
-			menu();
-		}
+				std::cout << '\n';
+			} while (position != "д" && position != "н");
+		} while (position != "выйти" && position != "н");
 	}
 	if (option == "5")
 	{
+		// Очищаем терминал
 		system("clear");
+
+		// Выходим из игры
 		exit(0);
 	}
 }

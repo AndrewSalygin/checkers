@@ -1,7 +1,8 @@
 #include "../include/actions_on_game.h"
 
 // Проверка количества шашек на доске
-bool quantity_checkers(Desk *desk, Figure_Color &color_passage)
+bool quantity_checkers(Desk *desk, Figure_Color &color_passage, Desk *copy_desk, 
+							Figure_Color &copy_color_passage)
 {
 	int count_white = 0;
 	int count_black = 0;
@@ -30,37 +31,20 @@ bool quantity_checkers(Desk *desk, Figure_Color &color_passage)
 	// Перезапускаем игру, если требуется
 	if (count_white == 0)
 	{
-		std::cout << "\nЧёрные выиграли!";
-		question_restart_game(desk);
+		std::cout << "\nВторой игрок выиграл!";
+		question_restart_game(desk, color_passage, copy_desk, copy_color_passage);
 	}
 	if (count_black == 0)
 	{
-		std::cout << "\nБелые выиграли!";
-		question_restart_game(desk);
+		std::cout << "\nПерввый игрок выиграл!";
+		question_restart_game(desk, color_passage, copy_desk, copy_color_passage);
 	} 
 	return true;
 }
 
-// Ключевые слова для действий над игрой
-bool exit_game(const std::string &step)
-{
-	if (step == "выйти")
-	{
-		return true;
-	}
-	if (step == "сдаюсь")
-	{
-		return true;
-	}
-	if (step == "ничья")
-	{
-		return true;
-	}
-	return false;
-}
-
 // Ничья
-void draw(Desk *desk, Figure_Color &color_passage, const std::string &step,
+void draw(Desk *desk, Desk *copy_desk, Figure_Color &color_passage,
+			Figure_Color &copy_color_passage, const std::string &step,
 			bool &players_draw)
 {
 	if (step == "ничья")
@@ -70,11 +54,11 @@ void draw(Desk *desk, Figure_Color &color_passage, const std::string &step,
 
 		do
 		{
-			std::cout << "\nСогласен ли второй игрок? (да/нет)\n";
+			std::cout << "\nСогласен ли второй игрок? (д/н)\n";
 			std::cin >> players_draw_str;
-		} while (players_draw_str != "да" && players_draw_str != "нет");
+		} while (players_draw_str != "д" && players_draw_str != "н");
 
-		if (players_draw_str == "да")
+		if (players_draw_str == "д")
 		{
 			// Делаем ничью
 			players_draw = true;
@@ -82,7 +66,7 @@ void draw(Desk *desk, Figure_Color &color_passage, const std::string &step,
 			std::cout << "\nОбъявляется ничья!";
 
 			// Спрашиваем о рестарте игры
-			question_restart_game(desk);
+			question_restart_game(desk, color_passage, copy_desk, copy_color_passage);
 		}
 		else
 		{

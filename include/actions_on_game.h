@@ -3,9 +3,10 @@
 
 #include "restart_game.h"
 
-bool quantity_checkers(Desk *desk, Figure_Color &color_passage);
-bool exit_game(const std::string &step);
-void draw(Desk *desk, Figure_Color &color_passage, const std::string &step,
+bool quantity_checkers(Desk *desk, Figure_Color &color_passage, Desk *copy_desk, 
+							Figure_Color &copy_color_passage);
+void draw(Desk *desk, Desk *copy_desk, Figure_Color &color_passage,
+			Figure_Color &copy_color_passage, const std::string &step,
 			bool &players_draw);
 
 #endif

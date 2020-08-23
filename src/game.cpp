@@ -3,6 +3,10 @@
 // Начинаем игру
 void game(Desk *desk, Figure_Color &color_passage)
 {
+	Desk copy_desk = (*desk);
+	Desk *copy_desk_ptr = &copy_desk;
+	Figure_Color copy_color_passage = color_passage;
+	
 	// Отслеживание ничьи
 	bool players_draw = false;
 
@@ -30,15 +34,18 @@ void game(Desk *desk, Figure_Color &color_passage)
 		do
 		{
 			// Проверка на ввод
-			check_input(step, players_draw, desk, color_passage); 
-		} while (move_checkers(desk, step, color_passage, players_draw) != true 
+			check_input(step, players_draw, desk, color_passage, copy_desk_ptr,
+				copy_color_passage); 
+		} while (move_checkers(desk, step, color_passage, players_draw, 
+								copy_desk_ptr, copy_color_passage) != true 
 								&& step != "сдаюсь" && step != "выйти");
 
 		// Отрисовываем доску заново
 		print_desk(desk, color_passage);
 
-	} while (quantity_checkers(desk, color_passage) && !deadlock(desk) &&
-				step != "выйти" && step != "сдаюсь" && !players_draw);
+	} while (quantity_checkers(desk, color_passage, copy_desk_ptr, copy_color_passage)
+	 && !deadlock(desk, color_passage, copy_desk_ptr, copy_color_passage) &&
+	 step != "выйти" && step != "сдаюсь" && !players_draw);
 	if (step == "выйти")
 	{
 		std::cout << '\n';
@@ -50,18 +57,18 @@ void game(Desk *desk, Figure_Color &color_passage)
 		if (color_passage == White)
 		{
 			std::cout << '\n';
-			std::cout << "Победили чёрные!\n";
+			std::cout << "Победил второй игрок!\n";
 
 			// Спрашиваем о рестарте игры
-			question_restart_game(desk);
+			question_restart_game(desk, color_passage, copy_desk_ptr, copy_color_passage);
 		}
 		else
 		{
 			std::cout << '\n';
-			std::cout << "Победили белые!\n";
+			std::cout << "Победил первый игрок!\n";
 
 			// Спрашиваем о рестарте игры
-			question_restart_game(desk);
+			question_restart_game(desk, color_passage, copy_desk_ptr, copy_color_passage);
 		}
 	}
 }

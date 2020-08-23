@@ -1,6 +1,7 @@
 #include "../include/deadlock.h"
 
-bool deadlock(Desk *desk)
+bool deadlock(Desk *desk, Figure_Color &color_passage, Desk *copy_desk,
+				Figure_Color &copy_color_passage)
 {
 	int x;
 	Figure_Color local_color;
@@ -51,8 +52,8 @@ bool deadlock(Desk *desk)
 	// Единственный случай, когда белые не могут сделать ход
 	if (count == 24)
 	{
-		std::cout << "\nЧёрные выиграли!";
-		question_restart_game(desk);
+		std::cout << "\nВторой игрок выиграл!";
+		question_restart_game(desk, color_passage, copy_desk, copy_color_passage);
 	}
 	return false;
 }

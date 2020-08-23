@@ -2,7 +2,8 @@
 
 // Движение фигур
 bool move_checkers(Desk *desk, std::string &step, Figure_Color &color_passage,
-					bool &player_draw)
+					bool &player_draw, Desk *copy_desk,
+					Figure_Color &copy_color_passage)
 {
 	// Координаты выбранной фигуры
 	Coordinate matrix_c;
@@ -15,9 +16,14 @@ bool move_checkers(Desk *desk, std::string &step, Figure_Color &color_passage,
 	matrix_n.x = (int)step[2] - 97;
 
 	// Проверяем возможность такого хода
-	if (rules(desk, matrix_c, matrix_n, color_passage, player_draw))
+	if (rules(desk, matrix_c, matrix_n, color_passage, copy_desk,
+				copy_color_passage, player_draw))
 	{
 		return true;
+	}
+	else
+	{
+		std::cout << "\nХод невозможен!\nВведите другой:\n";
 	}
 	return false;
 }

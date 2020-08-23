@@ -49,5 +49,6 @@ void menu()
 
 	print_line(line, left_corner, right_corner);
 
+	// Выбор пункта в меню
 	options();
 }

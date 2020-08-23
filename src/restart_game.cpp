@@ -1,34 +1,30 @@
 #include "../include/restart_game.h"
 
-void restart_game(Desk *desk, Figure_Color &color_passage)
+void restart_game(Desk *desk, Figure_Color &color_passage, Desk *copy_desk, 
+			Figure_Color &copy_color_passage)
 {
-	(*desk) = init_desk();
-
-	// Ход начинается с black, т.к print_desk() поменяет его на white
-	color_passage = Black;
-	
 	// Рисуем начальную доску
-	print_desk(desk, color_passage);
+	print_desk(copy_desk, copy_color_passage);
 
 	// Начинаем игру
-	game(desk, color_passage);
+	game(copy_desk, copy_color_passage);
 }
 
-bool question_restart_game(Desk *desk)
+bool question_restart_game(Desk *desk, Figure_Color &color_passage, Desk *copy_desk, 
+			Figure_Color &copy_color_passage)
 {
-	std::cout << "\nХотите сыграть ещё? (да/нет): ";
+	std::cout << "\nХотите сыграть ещё? (д/н): ";
 	std::string answer;
-	Figure_Color color_passage;
 	do
 	{
 		std::cin >> answer;
-	} while (answer != "да" && answer != "нет");
-	if (answer == "да")
+	} while (answer != "д" && answer != "н");
+	if (answer == "д")
 	{
-		restart_game(desk, color_passage);
+		restart_game(desk, color_passage, copy_desk, copy_color_passage);
 		return true;
 	}
-	if (answer == "нет")
+	if (answer == "н")
 	{
 		system("clear");
 		menu();
