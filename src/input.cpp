@@ -3,7 +3,7 @@
 // Проверка ввода с помощью регулярных выражений
 void check_input(std::string &step, bool &players_draw, Desk *desk, 
 					Figure_Color &color_passage, Desk *copy_desk, 
-					Figure_Color &copy_color_passage)
+					Figure_Color &copy_color_passage, std::fstream &save_moves)
 {
 	do
 	{
@@ -19,7 +19,7 @@ void check_input(std::string &step, bool &players_draw, Desk *desk,
 		{
 			// Проверка ничьи
 			draw(desk, copy_desk, color_passage, copy_color_passage, step,
-					players_draw);
+					players_draw, save_moves);
 			continue;
 		}
 

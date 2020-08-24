@@ -1,7 +1,7 @@
 #include "../include/deadlock.h"
 
 bool deadlock(Desk *desk, Figure_Color &color_passage, Desk *copy_desk,
-				Figure_Color &copy_color_passage)
+				Figure_Color &copy_color_passage, std::fstream &save_moves)
 {
 	int x;
 	Figure_Color local_color;
@@ -53,7 +53,8 @@ bool deadlock(Desk *desk, Figure_Color &color_passage, Desk *copy_desk,
 	if (count == 24)
 	{
 		std::cout << "\nВторой игрок выиграл!";
-		question_restart_game(desk, color_passage, copy_desk, copy_color_passage);
+		question_restart_game(desk, color_passage, copy_desk, copy_color_passage,
+			save_moves);
 	}
 	return false;
 }

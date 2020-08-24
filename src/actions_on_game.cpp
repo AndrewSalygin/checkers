@@ -2,7 +2,7 @@
 
 // Проверка количества шашек на доске
 bool quantity_checkers(Desk *desk, Figure_Color &color_passage, Desk *copy_desk, 
-							Figure_Color &copy_color_passage)
+							Figure_Color &copy_color_passage, std::fstream &save_moves)
 {
 	int count_white = 0;
 	int count_black = 0;
@@ -32,12 +32,16 @@ bool quantity_checkers(Desk *desk, Figure_Color &color_passage, Desk *copy_desk,
 	if (count_white == 0)
 	{
 		std::cout << "\nВторой игрок выиграл!";
-		question_restart_game(desk, color_passage, copy_desk, copy_color_passage);
+		question_restart_game(desk, color_passage, copy_desk, copy_color_passage,
+			save_moves);
+		return false;
 	}
 	if (count_black == 0)
 	{
 		std::cout << "\nПерввый игрок выиграл!";
-		question_restart_game(desk, color_passage, copy_desk, copy_color_passage);
+		question_restart_game(desk, color_passage, copy_desk, copy_color_passage,
+			save_moves);
+		return false;
 	} 
 	return true;
 }
@@ -45,7 +49,7 @@ bool quantity_checkers(Desk *desk, Figure_Color &color_passage, Desk *copy_desk,
 // Ничья
 void draw(Desk *desk, Desk *copy_desk, Figure_Color &color_passage,
 			Figure_Color &copy_color_passage, const std::string &step,
-			bool &players_draw)
+			bool &players_draw, std::fstream &save_moves)
 {
 	if (step == "ничья")
 	{
@@ -66,7 +70,8 @@ void draw(Desk *desk, Desk *copy_desk, Figure_Color &color_passage,
 			std::cout << "\nОбъявляется ничья!";
 
 			// Спрашиваем о рестарте игры
-			question_restart_game(desk, color_passage, copy_desk, copy_color_passage);
+			question_restart_game(desk, color_passage, copy_desk, copy_color_passage,
+									save_moves);
 		}
 		else
 		{

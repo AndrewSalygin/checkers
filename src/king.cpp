@@ -380,7 +380,7 @@ bool check_all_hit_king(Desk *desk, Figure_Color &color_passage,
 // Король
 bool king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n, 
 	Coordinate &enemy_checker, Figure_Color &color_passage, bool &players_draw,
-	Desk *copy_desk, Figure_Color &copy_color_passage)
+	Desk *copy_desk, Figure_Color &copy_color_passage, std::fstream &save_moves)
 {
 	// Ходим только по диагоналям. Если модуль |y следующий - y текущий| == 
 	// == |x следующий - x текущий| 
@@ -425,9 +425,9 @@ bool king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 				{
 					// Проверка на ввод
 					check_input(step, players_draw, desk, color_passage, copy_desk,
-								copy_color_passage);
+								copy_color_passage, save_moves);
 				} while (move_checkers(desk, step, color_passage, players_draw, 
-										copy_desk, copy_color_passage) != true
+										copy_desk, copy_color_passage, save_moves) != true
 				 						&& step != "сдаюсь" && step != "выйти");
 			}
 			return true;

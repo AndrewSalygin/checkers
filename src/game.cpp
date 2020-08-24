@@ -13,6 +13,13 @@ void game(Desk *desk, Figure_Color &color_passage)
 	// Ввод игрока
 	std::string step;
 
+	std::fstream save_moves;
+
+	int count_moves = 0;
+
+	// Открываем
+	save_moves.open("../game", std::ios::out);
+
 	// Вывод текста для игроков
 	do
 	{
@@ -35,17 +42,38 @@ void game(Desk *desk, Figure_Color &color_passage)
 		{
 			// Проверка на ввод
 			check_input(step, players_draw, desk, color_passage, copy_desk_ptr,
-				copy_color_passage); 
+				copy_color_passage, save_moves); 
 		} while (move_checkers(desk, step, color_passage, players_draw, 
-								copy_desk_ptr, copy_color_passage) != true 
+								copy_desk_ptr, copy_color_passage, save_moves) != true 
 								&& step != "сдаюсь" && step != "выйти");
 
 		// Отрисовываем доску заново
 		print_desk(desk, color_passage);
+		
+		if (color_passage == White && step != "выйти" && step != "сдаюсь")
+		{
+			++count_moves;
+		}
+		
+		// Если открыт
+		if(save_moves.is_open() && step != "выйти" && step != "сдаюсь")
+		{
+			if (color_passage == White)
+			{
+				save_moves << count_moves << ". " << step << ' ';
+			}
+			else
+			{
+				save_moves << step << ' ';
+			}
+		}
 
-	} while (quantity_checkers(desk, color_passage, copy_desk_ptr, copy_color_passage)
-	 && !deadlock(desk, color_passage, copy_desk_ptr, copy_color_passage) &&
-	 step != "выйти" && step != "сдаюсь" && !players_draw);
+	} while (quantity_checkers(desk, color_passage, copy_desk_ptr, copy_color_passage, 
+		save_moves) && !deadlock(desk, color_passage, copy_desk_ptr, copy_color_passage, 
+	 	save_moves) && step != "выйти" && step != "сдаюсь" && !players_draw);
+
+	save_moves.close();
+
 	if (step == "выйти")
 	{
 		std::cout << '\n';
@@ -60,7 +88,7 @@ void game(Desk *desk, Figure_Color &color_passage)
 			std::cout << "Победил второй игрок!\n";
 
 			// Спрашиваем о рестарте игры
-			question_restart_game(desk, color_passage, copy_desk_ptr, copy_color_passage);
+			question_restart_game(desk, color_passage, copy_desk_ptr, copy_color_passage, save_moves);
 		}
 		else
 		{
@@ -68,7 +96,7 @@ void game(Desk *desk, Figure_Color &color_passage)
 			std::cout << "Победил первый игрок!\n";
 
 			// Спрашиваем о рестарте игры
-			question_restart_game(desk, color_passage, copy_desk_ptr, copy_color_passage);
+			question_restart_game(desk, color_passage, copy_desk_ptr, copy_color_passage, save_moves);
 		}
 	}
 }

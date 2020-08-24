@@ -189,7 +189,7 @@ bool step_checker(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 
 bool checker(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n, 
 	Coordinate &enemy_checker, Figure_Color &color_passage, bool &players_draw,
-	Desk *copy_desk, Figure_Color &copy_color_passage)
+	Desk *copy_desk, Figure_Color &copy_color_passage, std::fstream &save_moves)
 {
 	// Следующая линия, на которую ступит шашка
 	int next_line;
@@ -254,9 +254,9 @@ bool checker(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 			{
 				// Проверка на ввод
 				check_input(step, players_draw, desk, color_passage, copy_desk,
-								copy_color_passage); 
+								copy_color_passage, save_moves); 
 			} while (move_checkers(desk, step, color_passage, players_draw, 
-								copy_desk, copy_color_passage) != true
+								copy_desk, copy_color_passage, save_moves) != true
 			 							&& step != "сдаюсь" && step != "выйти");
 		}
 
@@ -271,9 +271,9 @@ bool checker(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 			{
 				// Проверка на ввод
 				check_input(step, players_draw, desk, color_passage, copy_desk,
-								copy_color_passage);
+								copy_color_passage, save_moves);
 			} while (move_checkers(desk, step, color_passage, players_draw, 
-								copy_desk, copy_color_passage) != true
+								copy_desk, copy_color_passage, save_moves) != true
 			 							&& step != "сдаюсь" && step != "выйти");
 		}
 		return true;

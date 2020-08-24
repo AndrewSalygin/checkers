@@ -252,6 +252,9 @@ void print_hint()
 	std::string vertical_line     = "\u2502";
 
 	print_space_hint();
+	std::cout << vertical_line << "В файле game записывается ваша партия" <<
+	vertical_line << '\n';
+	print_space_hint();
 	std::cout << vertical_line << " Чтобы выйти в меню, напишите: выйти " <<
 	vertical_line << '\n';
 	print_space_hint();

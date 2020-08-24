@@ -8,5 +8,5 @@
 
 void check_input(std::string &step, bool &players_draw, Desk *desk, 
 					Figure_Color &color_passage, Desk *copy_desk, 
-					Figure_Color &copy_color_passage);
+					Figure_Color &copy_color_passage, std::fstream &save_moves);
 #endif

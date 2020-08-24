@@ -11,7 +11,7 @@ void restart_game(Desk *desk, Figure_Color &color_passage, Desk *copy_desk,
 }
 
 bool question_restart_game(Desk *desk, Figure_Color &color_passage, Desk *copy_desk, 
-			Figure_Color &copy_color_passage)
+			Figure_Color &copy_color_passage, std::fstream &save_moves)
 {
 	std::cout << "\nХотите сыграть ещё? (д/н): ";
 	std::string answer;
@@ -21,11 +21,13 @@ bool question_restart_game(Desk *desk, Figure_Color &color_passage, Desk *copy_d
 	} while (answer != "д" && answer != "н");
 	if (answer == "д")
 	{
+		save_moves.close();
 		restart_game(desk, color_passage, copy_desk, copy_color_passage);
 		return true;
 	}
 	if (answer == "н")
 	{
+		save_moves.close();
 		system("clear");
 		menu();
 	}
