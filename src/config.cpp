@@ -12,7 +12,7 @@ void read_config()
   	std::fstream config;
 
   	// Открываем конфиг
-   	config.open("../config", std::ios::in);
+   	config.open("config", std::ios::in);
 
    	// Если он открыт
 	if (config.is_open())
@@ -50,7 +50,7 @@ void save_config()
 	std::fstream config;
 
 	// Открываем
-	config.open("../config", std::ios::out);
+	config.open("config", std::ios::out);
 
 	// Если открыт
 	if(config.is_open())
