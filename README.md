@@ -1,4 +1,4 @@
-# Terminal Checkers C++
+# Terminal Checkers C++ for Linux
 ## Установка
 Для того, чтобы запустить шашки выполните:
 ```bash
