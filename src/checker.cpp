@@ -187,7 +187,7 @@ bool step_checker(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 	return false;
 }
 
-bool checker(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n, 
+bool checker(Desk *desk, std::string &step, Coordinate &matrix_c, Coordinate &matrix_n, 
 	Coordinate &enemy_checker, Figure_Color &color_passage, bool &players_draw,
 	Desk *copy_desk, Figure_Color &copy_color_passage, std::fstream &save_moves)
 {
@@ -264,17 +264,25 @@ bool checker(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 		if (check_current_hit_checker(desk, enemy_checker, matrix_n))
 		{
 			std::cout << "Введите следующую позицию шашки\nПример(d6f4): ";
-			std::string step;
+			std::string local_step;
 
 			// Игрок ходит
 			do
 			{
 				// Проверка на ввод
-				check_input(step, players_draw, desk, color_passage, copy_desk,
+				check_input(local_step, players_draw, desk, color_passage, copy_desk,
 								copy_color_passage, save_moves);
-			} while (move_checkers(desk, step, color_passage, players_draw, 
+			} while (move_checkers(desk, local_step, color_passage, players_draw, 
 								copy_desk, copy_color_passage, save_moves) != true
 			 							&& step != "сдаюсь" && step != "выйти");
+			
+			// Если открыт
+			if(save_moves.is_open() && local_step != "выйти" &&
+														local_step != "сдаюсь")
+			{
+				step[2] = local_step[2];
+				step[3] = local_step[3];
+			}
 		}
 		return true;
 	}
