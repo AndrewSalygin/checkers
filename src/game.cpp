@@ -18,7 +18,7 @@ void game(Desk *desk, Figure_Color &color_passage)
 	int count_moves = 0;
 
 	// Открываем
-	save_moves.open("../game.txt", std::ios::out);
+	save_moves.open("../game", std::ios::out);
 
 	// Вывод текста для игроков
 	do

@@ -224,7 +224,7 @@ void print_main_desk(const Desk *desk)
 
 void print_space_hint()
 {
-	for (int i = 0; i < 20; ++i)
+	for (int i = 0; i < 21; ++i)
 	{
 		print_space();
 	}
@@ -242,7 +242,7 @@ void print_hint()
 
 	std::string line              = "\u2500";
 
-	for (int i = 0; i < 41; ++i)
+	for (int i = 0; i < 37; ++i)
 	{
 		std::cout << line;
 	}
@@ -252,16 +252,16 @@ void print_hint()
 	std::string vertical_line     = "\u2502";
 
 	print_space_hint();
-	std::cout << vertical_line << "В файле game.txt записывается ваша партия" <<
+	std::cout << vertical_line << "В файле game записывается ваша партия" <<
 	vertical_line << '\n';
 	print_space_hint();
-	std::cout << vertical_line << "   Чтобы выйти в меню, напишите: выйти   " <<
+	std::cout << vertical_line << " Чтобы выйти в меню, напишите: выйти " <<
 	vertical_line << '\n';
 	print_space_hint();
-	std::cout << vertical_line << "      Чтобы предложить ничью: ничья      " <<
+	std::cout << vertical_line << "    Чтобы предложить ничью: ничья    " <<
 	vertical_line << '\n'; 
 	print_space_hint();
-	std::cout << vertical_line << "          Чтобы сдаться: сдаюсь          " <<
+	std::cout << vertical_line << "        Чтобы сдаться: сдаюсь        " <<
 	vertical_line << '\n';
 
 	print_space_hint();
@@ -269,7 +269,7 @@ void print_hint()
 
 	std::cout << left_corner;
 
-	for (int i = 0; i < 41; ++i)
+	for (int i = 0; i < 37; ++i)
 	{
 		std::cout << line;
 	}

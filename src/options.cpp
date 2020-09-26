@@ -110,7 +110,7 @@ void options()
 	if (option == "4")
 	{
 		// Позиция фигуры в координатах
-		Coordinate matrix_c;
+		Coordinate position_c;
 
 		// Позиция фигуры в строке
 		std::string position;
@@ -133,7 +133,7 @@ void options()
 			
 			int count_white = 1;
 
-			cycle_before_filling(desk_ptr, color_passage, matrix_c, type, color,
+			cycle_before_filling(desk_ptr, color_passage, position_c, type, color,
 									count_white, position);
 			if (count_white < 12)
 			{
@@ -142,7 +142,7 @@ void options()
 					"а позже напишите 'n': ";
 
 				type = King;
-				cycle_before_filling(desk_ptr, color_passage, matrix_c, type, color,
+				cycle_before_filling(desk_ptr, color_passage, position_c, type, color,
 										count_white, position);
 			}
 			
@@ -153,7 +153,7 @@ void options()
 			int count_black = 1;
 			type = Checker;
 			color = Black;
-			cycle_before_filling(desk_ptr, color_passage, matrix_c, type, color,
+			cycle_before_filling(desk_ptr, color_passage, position_c, type, color,
 									count_black, position);
 
 			if (count_black < 12)
@@ -163,7 +163,7 @@ void options()
 					"а позже напишите 'n': ";
 		
 				type = King;
-				cycle_before_filling(desk_ptr, color_passage, matrix_c, type, color,
+				cycle_before_filling(desk_ptr, color_passage, position_c, type, color,
 									count_black, position);
 			}
 			if (count_white == 1 || count_black == 1)

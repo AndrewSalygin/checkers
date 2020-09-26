@@ -193,7 +193,7 @@ void call_cycles(Desk *desk, Figure_Color &color_passage,
 						global_color, answer, text);
 }
 
-void filling_array(Desk *desk, Figure_Color &color_passage, Coordinate &matrix_c,
+void filling_array(Desk *desk, Figure_Color &color_passage, Coordinate &position_c,
 					Figure_Type &type, Figure_Color &color, int &count,
 					std::string &position)
 {
@@ -202,16 +202,16 @@ void filling_array(Desk *desk, Figure_Color &color_passage, Coordinate &matrix_c
 	{
 		// Проверяем с помощью регулярных условий и логики шашек
 		if (std::regex_match(position, std::regex("[a-h][1-8]")) &&
-			((matrix_c.y % 2 != 0 && matrix_c.x % 2 != 0) ||
-			  matrix_c.y % 2 == 0 && matrix_c.x % 2 == 0) &&
-			  ((*desk)[matrix_c.y][matrix_c.x].figure_type == Empty || 
-			  (*desk)[matrix_c.y][matrix_c.x].figure_color == color))
+			((position_c.y % 2 != 0 && position_c.x % 2 != 0) ||
+			  position_c.y % 2 == 0 && position_c.x % 2 == 0) &&
+			  ((*desk)[position_c.y][position_c.x].figure_type == Empty || 
+			  (*desk)[position_c.y][position_c.x].figure_color == color))
 		{
 			// Если цвет совпадает, то мы убираем фигуру, которая стояла раньше
-			if ((*desk)[matrix_c.y][matrix_c.x].figure_color == color)
+			if ((*desk)[position_c.y][position_c.x].figure_color == color)
 			{
-				(*desk)[matrix_c.y][matrix_c.x].figure_type = Empty;
-				(*desk)[matrix_c.y][matrix_c.x].figure_color = None;
+				(*desk)[position_c.y][position_c.x].figure_type = Empty;
+				(*desk)[position_c.y][position_c.x].figure_color = None;
 				--count;
 				print_desk(desk, color_passage);
 				return;
@@ -220,10 +220,10 @@ void filling_array(Desk *desk, Figure_Color &color_passage, Coordinate &matrix_c
 			// Если это белая шашка
 			if (type == Checker && color == White)
 			{
-				if (matrix_c.y != 7)
+				if (position_c.y != 7)
 				{
-					(*desk)[matrix_c.y][matrix_c.x].figure_type = Checker;
-					(*desk)[matrix_c.y][matrix_c.x].figure_color = White;
+					(*desk)[position_c.y][position_c.x].figure_type = Checker;
+					(*desk)[position_c.y][position_c.x].figure_color = White;
 					++count;
 					print_desk(desk, color_passage);
 				}
@@ -237,8 +237,8 @@ void filling_array(Desk *desk, Figure_Color &color_passage, Coordinate &matrix_c
 			// Если это белая дамка
 			if (type == King && color == White)
 			{
-				(*desk)[matrix_c.y][matrix_c.x].figure_type = King;
-				(*desk)[matrix_c.y][matrix_c.x].figure_color = White;
+				(*desk)[position_c.y][position_c.x].figure_type = King;
+				(*desk)[position_c.y][position_c.x].figure_color = White;
 				++count;
 				print_desk(desk, color_passage);
 			}
@@ -246,10 +246,10 @@ void filling_array(Desk *desk, Figure_Color &color_passage, Coordinate &matrix_c
 			// Если это чёрная шашка
 			if (type == Checker && color == Black)
 			{
-				if (matrix_c.y != 0)
+				if (position_c.y != 0)
 				{
-					(*desk)[matrix_c.y][matrix_c.x].figure_type = Checker;
-					(*desk)[matrix_c.y][matrix_c.x].figure_color = Black;
+					(*desk)[position_c.y][position_c.x].figure_type = Checker;
+					(*desk)[position_c.y][position_c.x].figure_color = Black;
 					++count;
 					print_desk(desk, color_passage);
 				}
@@ -263,8 +263,8 @@ void filling_array(Desk *desk, Figure_Color &color_passage, Coordinate &matrix_c
 			// Если это чёрная дамка
 			if (type == King && color == Black)
 			{
-				(*desk)[matrix_c.y][matrix_c.x].figure_type = King;
-				(*desk)[matrix_c.y][matrix_c.x].figure_color = Black;
+				(*desk)[position_c.y][position_c.x].figure_type = King;
+				(*desk)[position_c.y][position_c.x].figure_color = Black;
 				++count;
 				print_desk(desk, color_passage);
 			}
@@ -282,7 +282,7 @@ void filling_array(Desk *desk, Figure_Color &color_passage, Coordinate &matrix_c
 }
 
 void cycle_before_filling(Desk *desk, Figure_Color &color_passage, 
-	Coordinate &matrix_c, Figure_Type &type, Figure_Color &color, int &count,
+	Coordinate &position_c, Figure_Type &type, Figure_Color &color, int &count,
 	std::string &position)
 {
 	do
@@ -291,8 +291,8 @@ void cycle_before_filling(Desk *desk, Figure_Color &color_passage,
 		std::cin >> position;
 
 		// Запоминаем координаты
-		matrix_c.y = (int)position[1] - 49;
-		matrix_c.x = (int)position[0] - 97;
+		position_c.y = (int)position[1] - 49;
+		position_c.x = (int)position[0] - 97;
 
 		if (count <= 12)
 		{
@@ -301,16 +301,16 @@ void cycle_before_filling(Desk *desk, Figure_Color &color_passage,
 				std::cout << '\n';
 				break;
 			}
-			filling_array(desk, color_passage, matrix_c, type, color, count, 
+			filling_array(desk, color_passage, position_c, type, color, count, 
 							position);
 		}
 		else
 		{
 			// Проверяем совпадает ли цвет, чтобы убрать фигуру
-			if ((*desk)[matrix_c.y][matrix_c.x].figure_color == color)
+			if ((*desk)[position_c.y][position_c.x].figure_color == color)
 			{
-				(*desk)[matrix_c.y][matrix_c.x].figure_type = Empty;
-				(*desk)[matrix_c.y][matrix_c.x].figure_color = None;
+				(*desk)[position_c.y][position_c.x].figure_type = Empty;
+				(*desk)[position_c.y][position_c.x].figure_color = None;
 				--count;
 				print_desk(desk, color_passage);
 			}

@@ -1,24 +1,24 @@
 #include "../include/king.h"
 
 // Ходит дамка
-bool step_king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n)
+bool step_king(Desk *desk, Coordinate &position_c, Coordinate &position_n)
 {
 	// Клетка дамки
-	int y_c = matrix_c.y;
-	int x_c = matrix_c.x;
+	int y_c = position_c.y;
+	int x_c = position_c.x;
 
 	// Следующая клетка дамки
-	int y_n = matrix_n.y;
-	int x_n = matrix_n.x;
+	int y_n = position_n.y;
+	int x_n = position_n.x;
 
 	// Ходим только по диагоналям y_c = x_c && y_n = x_n, поэтому x не проверяем
 	while (y_c != y_n)
 	{
 		// Вверх
-		if (matrix_n.y > matrix_c.y)
+		if (position_n.y > position_c.y)
 		{
 			// Вправо
-			if (matrix_n.x > matrix_c.x)
+			if (position_n.x > position_c.x)
 			{
 				// Если следующая клетка пуста, то пропускаем её
 				if ((*desk)[y_c + 1][x_c + 1].figure_type == Empty)
@@ -52,7 +52,7 @@ bool step_king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n)
 		else
 		{
 			// Вправо
-			if (matrix_n.x > matrix_c.x)
+			if (position_n.x > position_c.x)
 			{
 				// Если следующая клетка пуста, то пропускаем её
 				if ((*desk)[y_c - 1][x_c + 1].figure_type == Empty)
@@ -87,29 +87,29 @@ bool step_king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n)
 }
 
 // Дамка атакует
-bool hit_king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n, 
+bool hit_king(Desk *desk, Coordinate &position_c, Coordinate &position_n, 
 	Coordinate &enemy_checker)
 {
 	// Количество вражеских фигур на пути
 	int count = 0;
 
 	// Клетка дамки
-	int y_c = matrix_c.y;
-	int x_c = matrix_c.x;
+	int y_c = position_c.y;
+	int x_c = position_c.x;
 
 	// Следующая клетка дамки
-	int y_n = matrix_n.y;
-	int x_n = matrix_n.x;
+	int y_n = position_n.y;
+	int x_n = position_n.x;
 
 	// Ходим только по диагоналям y_c = x_c && y_n = x_n, поэтому x не проверяем
 	while (y_c != y_n)
 	{
 		// Четыре направления
 		// Вверх
-		if (matrix_n.y > matrix_c.y)
+		if (position_n.y > position_c.y)
 		{
 			// Вправо
-			if (matrix_n.x > matrix_c.x)
+			if (position_n.x > position_c.x)
 			{
 				// Если следующая клетка пуста, то пропускаем её
 				if ((*desk)[y_c + 1][x_c + 1].figure_type == Empty)
@@ -161,7 +161,7 @@ bool hit_king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 		else
 		{
 			// Вправо
-			if (matrix_n.x > matrix_c.x)
+			if (position_n.x > position_c.x)
 			{
 				// Если следующая клетка пуста, то пропускаем её
 				if ((*desk)[y_c - 1][x_c + 1].figure_type == Empty)
@@ -215,22 +215,22 @@ bool hit_king(Desk *desk, Coordinate &matrix_c, Coordinate &matrix_n,
 	if (count == 1)
 	{
 		// Проверяем, может ли она напасть на эту фигуру
-		return if_in_hit_checker_n_king(desk, matrix_c, matrix_n, enemy_checker);
+		return if_in_hit_checker_n_king(desk, position_c, position_n, enemy_checker);
 	}
 	return false;
 }
 
 // Может ли дамка ударить
 bool check_current_hit_king(Desk *desk, Coordinate &enemy_checker,
-														Coordinate &matrix_c)
+														Coordinate &position_c)
 {
 	// Координаты для следующей клетки дамки
 	Coordinate inner;
 
 	// Четыре направления
 	// Вверх влево
-	inner.y = matrix_c.y + 1;
-	inner.x = matrix_c.x - 1;
+	inner.y = position_c.y + 1;
+	inner.x = position_c.x - 1;
 
 	// Проверяем, что дамка не стоит на краю доски
 	while (inner.y < 7 && inner.x > 0)
@@ -252,14 +252,14 @@ bool check_current_hit_king(Desk *desk, Coordinate &enemy_checker,
 		--inner.x;
 	}
 	// Пробуем ударить
-	if (hit_king(desk, matrix_c, inner, enemy_checker))
+	if (hit_king(desk, position_c, inner, enemy_checker))
 	{
 		return true;
 	}
 
 	// Вниз вправо
-	inner.y = matrix_c.y - 1;
-	inner.x = matrix_c.x + 1;
+	inner.y = position_c.y - 1;
+	inner.x = position_c.x + 1;
 
 	// Проверяем, что дамка не стоит на краю доски
 	while (inner.x < 7 && inner.y > 0)
@@ -281,14 +281,14 @@ bool check_current_hit_king(Desk *desk, Coordinate &enemy_checker,
 		++inner.x;
 	}
 	// Пробуем ударить
-	if (hit_king(desk, matrix_c, inner, enemy_checker))
+	if (hit_king(desk, position_c, inner, enemy_checker))
 	{
 		return true;
 	}
 
 	// Вправо вверх
-	inner.y = matrix_c.y + 1;
-	inner.x = matrix_c.x + 1;
+	inner.y = position_c.y + 1;
+	inner.x = position_c.x + 1;
 
 	// Проверяем, что дамка не стоит на краю доски
 	while (inner.y < 7 && inner.x < 7)
@@ -310,14 +310,14 @@ bool check_current_hit_king(Desk *desk, Coordinate &enemy_checker,
 		++inner.x;
 	}
 	// Пробуем ударить
-	if (hit_king(desk, matrix_c, inner, enemy_checker))
+	if (hit_king(desk, position_c, inner, enemy_checker))
 	{
 		return true;
 	}
 
 	// Вниз влево
-	inner.y = matrix_c.y - 1;
-	inner.x = matrix_c.x - 1;
+	inner.y = position_c.y - 1;
+	inner.x = position_c.x - 1;
 
 	// Проверяем, что дамка не стоит на краю доски
 	while (inner.y > 0 && inner.x > 0)
@@ -339,7 +339,7 @@ bool check_current_hit_king(Desk *desk, Coordinate &enemy_checker,
 		--inner.x;
 	}
 	// Пробуем ударить
-	if (hit_king(desk, matrix_c, inner, enemy_checker))
+	if (hit_king(desk, position_c, inner, enemy_checker))
 	{
 		return true;
 	}
@@ -378,16 +378,16 @@ bool check_all_hit_king(Desk *desk, Figure_Color &color_passage,
 }
 
 // Король
-bool king(Desk *desk, std::string &step, Coordinate &matrix_c, Coordinate &matrix_n, 
+bool king(Desk *desk, std::string &step, Coordinate &position_c, Coordinate &position_n, 
 	Coordinate &enemy_checker, Figure_Color &color_passage, bool &players_draw,
 	Desk *copy_desk, Figure_Color &copy_color_passage, std::fstream &save_moves)
 {
 	// Ходим только по диагоналям. Если модуль |y следующий - y текущий| == 
 	// == |x следующий - x текущий| 
-	if (abs(matrix_n.y - matrix_c.y) == abs(matrix_n.x - matrix_c.x))
+	if (abs(position_n.y - position_c.y) == abs(position_n.x - position_c.x))
 	{
 		// Шаг:
-		if (step_king(desk, matrix_c, matrix_n))
+		if (step_king(desk, position_c, position_n))
 		{
 			// Может ли какая-либо шашка ударить
 			if (check_all_hit_checker(desk, color_passage, enemy_checker))
@@ -401,21 +401,21 @@ bool king(Desk *desk, std::string &step, Coordinate &matrix_c, Coordinate &matri
 			}
 
 			// Если нет, то шагаем дамкой
-			func_in_hit_n_step(desk, matrix_c, matrix_n);
+			func_in_hit_n_step(desk, position_c, position_n);
 			return true;
 		}
 
 		// Удар:
-		if (hit_king(desk, matrix_c, matrix_n, enemy_checker))
+		if (hit_king(desk, position_c, position_n, enemy_checker))
 		{
 			// Перескакиваем фигуру
-			func_in_hit_n_step(desk, matrix_c, matrix_n);
+			func_in_hit_n_step(desk, position_c, position_n);
 
 			// Удаляем вражескую фигуру
 			clear_element((*desk)[enemy_checker.y][enemy_checker.x]);
 
 			// Может ли данная дамка съесть ещё
-			if (check_current_hit_king(desk, enemy_checker, matrix_n))
+			if (check_current_hit_king(desk, enemy_checker, position_n))
 			{
 				std::cout << "Введите следующую позицию дамки\nПример(e1b4): ";
 				std::string local_step;
