@@ -1,5 +1,5 @@
 # Terminal Checkers C++ for Linux
-## Установка
+## Запуск
 Для того, чтобы запустить шашки выполните:
 ```bash
 g++ src/*.cpp -o main
