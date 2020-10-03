@@ -224,7 +224,7 @@ void print_main_desk(const Desk *desk)
 
 void print_space_hint()
 {
-	for (int i = 0; i < 21; ++i)
+	for (int i = 0; i < 20; ++i)
 	{
 		print_space();
 	}
