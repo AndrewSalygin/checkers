@@ -31,14 +31,14 @@ bool quantity_checkers(Desk *desk, Figure_Color &color_passage, Desk *copy_desk,
 	// Перезапускаем игру, если требуется
 	if (count_white == 0)
 	{
-		std::cout << "\nВторой игрок выиграл!";
+		std::cout << "\nПобедил второй игрок!";
 		question_restart_game(desk, color_passage, copy_desk, copy_color_passage,
 			save_moves);
 		return false;
 	}
 	if (count_black == 0)
 	{
-		std::cout << "\nПерввый игрок выиграл!";
+		std::cout << "\nПобедил первый игрок!";
 		question_restart_game(desk, color_passage, copy_desk, copy_color_passage,
 			save_moves);
 		return false;
