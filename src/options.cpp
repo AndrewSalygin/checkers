@@ -117,7 +117,7 @@ void options()
 		do
 		{
 			// Инициализируем доску
-			Desk desk = {NULL};
+			Desk desk = {};
 			Desk *desk_ptr = &desk;
 			Figure_Color color_passage;
 			

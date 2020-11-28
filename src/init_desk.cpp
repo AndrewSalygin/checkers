@@ -3,7 +3,7 @@
 Desk init_desk()
 {
 	// Создаём пустую доску
-	Desk desk = {NULL};
+	Desk desk = {};
 
 	// Горизонталь
 	int y;
