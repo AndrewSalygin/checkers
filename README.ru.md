@@ -9,3 +9,4 @@ g++ src/*.cpp -o main
 <img src = "https://github.com/AndrewSalygin/checkers/blob/master/img/1.png" width = "500">
 <img src = "https://github.com/AndrewSalygin/checkers/blob/master/img/2.png" width = "500">
 <img src = "https://github.com/AndrewSalygin/checkers/blob/master/img/3.png" width = "500">
+<img src = "https://github.com/AndrewSalygin/checkers/blob/master/img/4.png" width = "500">
